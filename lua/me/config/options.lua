@@ -32,6 +32,7 @@ opt.splitbelow    = true          -- Horizontal splits will automatically be bel
 opt.splitright    = true          -- Vertical splits will automatically be to the right
 opt.laststatus    = 0             -- Always display the status line
 opt.showmode      = true          -- We don't need to see things like -- INSERT -- anymore
+opt.winbar        = '%{%v:lua.Core.ui.winbar()%}'
 opt.dictionary    = '/usr/share/dict/words' -- EN Dictionary - <CTRL-X><CTRL-K>
 opt.number        = false         -- set numbered lines
 opt.relativenumber= false         -- set relative numbered lines
@@ -58,18 +59,19 @@ opt.confirm       = true          -- Confirm to save changes before exiting modi
 opt.showbreak     = '↪'
 opt.smoothscroll  = true
 opt.foldmethod    = 'expr'
--- opt.foldminlines  = 0             -- Allow closing even 1-line folds.
 opt.foldexpr      = 'v:lua.Core.fold.expr(v:lnum)'
--- opt.foldtext      = 'v:lua.Core.fold.text()'
--- opt.foldexpr      = "nvim_treesitter#foldexpr()"
+opt.foldtext      = 'v:lua.Core.fold.text()'
 opt.foldenable    = false
+-- opt.foldminlines  = 0             -- Allow closing even 1-line folds.
+-- opt.foldexpr      = "nvim_treesitter#foldexpr()"
+-- stylua: ignore end
 -- others: {{{
 -- see :h shortmess
 opt.shortmess:append({
-  W = true,   -- don't give "written" or "[w]" when writing a file
-  I = false,  -- don't give the intro message when starting Vim
-  c = true,   -- don't give |ins-completion-menu| messages
-  C = true,   -- don't give messages while scanning for ins-completion items, for instance "scanning tags"
+  W = true, -- don't give "written" or "[w]" when writing a file
+  I = false, -- don't give the intro message when starting Vim
+  c = true, -- don't give |ins-completion-menu| messages
+  C = true, -- don't give messages while scanning for ins-completion items, for instance "scanning tags"
 })
 opt.fillchars = {
   diff = '╱',
@@ -90,7 +92,7 @@ opt.formatoptions = 'jcroqlnt'
 -- n – recognize numbered lists and indent properly.
 -- t – auto-wrap normal text (not in comments) to textwidth.
 
-opt.winborder     = 'single'     -- Defines the default border style of floating windows
+opt.winborder = 'rounded' -- Defines the default border style of floating windows
 vim.g.python3_host_prog = os.getenv('HOME') .. '/.local/debugpy/bin/python'
 vim.g.loaded_perl_provider = 0
 vim.g.enable_autoformat = false
@@ -102,13 +104,21 @@ vim.opt.guicursor = {
 }
 
 -- types
-local ft = vim.filetype
-ft.add({
-  extension = { scratchpad = 'scratchpad' },
-  filename = { ['Scratchpad'] = 'scratchpad' },
-  pattern = { ['%.scratchpad$'] = 'scratchpad' },
-})
-ft.add({
-  extension = { gomarks = 'gomarks' },
-  pattern = { ['%.gomarks$'] = 'gomarks' },
+vim.filetype.add({
+  extension = {
+    rasi = 'rasi',
+    rofi = 'rasi',
+    gomarks = 'gomarks',
+    scratchpad = 'scratchpad',
+  },
+  pattern = {
+    ['%.gomarks$'] = 'gomarks',
+    ['%.scratchpad$'] = 'scratchpad',
+    ['%.env%.[%w_.-]+'] = 'sh',
+    ['.*/dunst/.+%.defaults'] = 'cfg',
+  },
+  filename = {
+    ['Scratchpad'] = 'scratchpad',
+    ['vifmrc'] = 'vim',
+  },
 })

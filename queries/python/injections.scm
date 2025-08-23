@@ -27,4 +27,3 @@
         (concatenated_string) @sql
     )
 )
-

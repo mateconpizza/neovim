@@ -1,4 +1,4 @@
----@class me.utils.lsp.diagnostic
+---@class me.core.lsp.diagnostic
 local M = {}
 local icons = Core.icons.lsp.diagnostics.filled
 

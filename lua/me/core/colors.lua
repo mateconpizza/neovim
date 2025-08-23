@@ -1,4 +1,4 @@
----@class me.utils.colors
+---@class me.core.colors
 local M = {}
 
 -- stylua: ignore

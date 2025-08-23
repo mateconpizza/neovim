@@ -18,7 +18,6 @@ return {
         {
           '<leader>gdc',
           function()
-            vim.cmd('TSBufDisable textobjects.move') -- disable in treesitter '[c' ']c'
             vim.cmd('Gvdiffsplit!') -- go to next change '[c' ']c'
           end,
           desc = 'resolve conflict',
@@ -57,17 +56,10 @@ return {
         changedelete  = { text = '~_' },
         untracked     = { text = '┆'  },
       },
-      signs_staged = {
-        add           = { text = '+'  },
-        change        = { text = '~'  },
-        delete        = { text = '_'  },
-        topdelete     = { text = '-'  },
-        changedelete  = { text = '~_' },
-        untracked     = { text = '┆'  },
-      },
-      -- stylua: ignore end
-      signs_staged_enable = vim.o.background == 'dark',
+      signs_staged_enable = false,
+      signcolumn = true,
       numhl = false,
+      linehl = false,
     },
     keys = {
       { '<leader>gb', '<CMD>Gitsigns toggle_current_line_blame<CR>', desc = 'git toggle blame' },
@@ -91,15 +83,16 @@ return {
       { 'gh', '<CMD>Gitsigns stage_hunk<CR>', desc = 'git stage hunk', mode = { 'o', 'x' } },
       { 'gH', '<CMD>Gitsigns stage_buffer<CR>', desc = 'git stage buffer', mode = { 'o', 'x' } },
       { 'ih', ':<C-U>Gitsigns select_hunk<CR>', desc = 'git select hunk', mode = { 'o', 'x' } },
-      -- highlights
+      -- toggle
       { '<leader>ghl', '<CMD>Gitsigns toggle_linehl<CR>', desc = 'git highlight line' },
       { '<leader>ghn', '<CMD>Gitsigns toggle_numhl<CR>', desc = 'git highlight numbers' },
+      { '<leader>gtn', '<CMD>Gitsigns toggle_numhl<CR>', desc = 'git highlight numbers' },
     },
     dependencies = { -- https://github.com/nvim-treesitter/nvim-treesitter
       'nvim-treesitter/nvim-treesitter',
-      opts = {
-        ensure_installed = { 'diff', 'git_rebase', 'gitattributes', 'gitcommit', 'gitignore', 'git_config' },
-      },
+      opts = function()
+        Core.treesitter.add({ 'diff', 'git_rebase', 'gitattributes', 'gitcommit', 'gitignore', 'git_config' })
+      end,
     },
     enabled = true,
   },

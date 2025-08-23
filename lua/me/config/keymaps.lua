@@ -20,8 +20,8 @@ local silent = { silent = true }
 -- nmap('n', 'X', '"_X', options)
 
 -- remap for dealing with word wrap
-nmap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-nmap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+-- nmap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+-- nmap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- use ctlr + hjkl to resize windows:
 nmap('n', '<C-h>', ':vertical resize -2<CR>', options)
@@ -65,7 +65,7 @@ map('<leader>qG', '<CMD>clast<CR>', 'quickfix last')
 
 -- toggle
 map('<leader>bb', toggle.scrollsync, 'scrolling synchronously')
-map('<leader>bC', '<CMD>TSContextToggle<CR>', 'toggle treesitter context')
+map('<leader>bC', '<CMD>TSContext toggle<CR>', 'toggle treesitter context')
 map('<leader>bi', toggle.inlay_hints, 'toggle inlay hints')
 map('<leader>bg', toggle.gitsings, 'toggle git signs')
 map('<leader>bL', toggle.laststatus, 'set laststatus')

@@ -1,4 +1,4 @@
----@class me.utils.git
+---@class me.core.git
 local M = {}
 
 ---@return boolean

@@ -25,7 +25,7 @@ return {
       { '[t', function() require('todo-comments').jump_prev() end, desc = 'previous todo comment' },
       { '<leader>st', '<CMD>TodoFzfLua<CR>', desc = 'search TODO|FIX|FIXME|WIP' },
       { '<leader>mT', function()
-        if not Core.has('trouble.nvim') then
+        if not Core.utils.has_plugin('trouble.nvim') then
           Core.warnme('todo-comments.nvim: "trouble.nvim" not installed\n')
           return
         end

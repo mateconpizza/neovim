@@ -1,4 +1,4 @@
----@class me.utils.fold
+---@class me.core.fold
 
 -- ╻ ╻╻┏┓╻┏━╸┏━╸┏┓╻╺┳╸
 -- ┃╻┃┃┃┗┫┃  ┣╸ ┃┗┫ ┃

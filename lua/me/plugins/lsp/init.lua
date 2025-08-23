@@ -3,9 +3,16 @@ return {
   { -- https://github.com/j-hui/fidget.nvim
     'j-hui/fidget.nvim',
     event = 'LspAttach',
+    -- https://github.com/j-hui/fidget.nvim/issues/288
+    commit = '17ce5ac3b4e5ef590d4f4fd7d91e8fc233114074',
     opts = {
       notification = {
         window = { winblend = 0 },
+      },
+      progress = {
+        display = {
+          done_icon = '✓',
+        },
       },
     },
     enabled = true,
@@ -28,6 +35,7 @@ return {
       ensure_installed = {
         'checkmake',
         'prettier',
+        'stylua',
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
@@ -47,6 +55,7 @@ return {
 
   { -- https://github.com/b0o/SchemaStore.nvim
     'b0o/SchemaStore.nvim',
-    enable = true,
+    enabled = false,
+    lazy = false,
   },
 }

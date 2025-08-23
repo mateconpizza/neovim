@@ -33,10 +33,9 @@ end
 return {
   { -- https://github.com/nvim-treesitter/nvim-treesitter
     'nvim-treesitter/nvim-treesitter',
-    opts = function(_, opts)
-      if type(opts.ensure_installed) == 'table' then
-        vim.list_extend(opts.ensure_installed, { 'go', 'gomod', 'gowork', 'gosum' })
-      end
+    branch = 'main',
+    opts = function()
+      Core.treesitter.add({ 'go', 'gomod', 'gowork', 'gosum', 'gotmpl' })
     end,
   },
 
@@ -46,7 +45,7 @@ return {
       if type(opts.ensure_installed) == 'table' then
         vim.list_extend(
           opts.ensure_installed,
-          { 'goimports-reviser', 'golangci-lint', 'staticcheck', 'gofumpt', 'golines' }
+          { 'goimports-reviser', 'golangci-lint', 'staticcheck', 'gofumpt', 'golines', 'delve' }
         )
       end
     end,
@@ -57,7 +56,6 @@ return {
     optional = true,
     enabled = Core.env.debug,
     dependencies = {
-      { 'williamboman/mason.nvim', opts = { ensure_installed = { 'delve' } } },
       { 'leoluz/nvim-dap-go', opts = {}, enabled = Core.env.debug },
     },
     opts = function()
@@ -73,6 +71,12 @@ return {
       dap.configurations.go = {
         {
           name = 'Debug',
+          type = 'delve',
+          request = 'launch',
+          program = '${relativeFileDirname}',
+        },
+        {
+          name = 'Debug file',
           type = 'delve',
           request = 'launch',
           program = '${file}',

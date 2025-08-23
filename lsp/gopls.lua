@@ -1,7 +1,9 @@
 ---@type vim.lsp.Config
 return {
   cmd = { 'gopls' },
-  filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+  filetypes = { 'go', 'gomod', 'gowork', 'gotmpl', 'gohtml' },
+  root_markers = { 'go.work', 'go.mod', '.git' },
+  single_file_support = true,
   settings = {
     gopls = {
       gofumpt = true,
@@ -34,12 +36,7 @@ return {
       completeUnimported = true,
       staticcheck = true,
       directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules' },
-      semanticTokens = true,
+      semanticTokens = false,
     },
   },
-
-  root_markers = {
-    'go.mod',
-  },
-  single_file_support = true,
 }

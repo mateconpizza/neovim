@@ -1,4 +1,4 @@
----@class me.utils.retain
+---@class me.core.retain
 
 vim.g.retained = {}
 

@@ -1,4 +1,4 @@
----@class me.utils.toggle
+---@class me.core.toggle
 local M = {}
 local minimalist = false
 local maximize = {
@@ -22,14 +22,14 @@ end
 
 function M.numbers()
   ---@diagnostic disable-next-line: undefined-field
-  local enabled = not Core.boolme(vim.opt_local.relativenumber._value)
+  local enabled = not Core.utils.boolme(vim.opt_local.relativenumber._value)
   vim.opt_local.number = enabled
   vim.opt_local.relativenumber = enabled
 end
 
 function M.signcolumn()
   ---@diagnostic disable-next-line: undefined-field
-  if Core.boolme(vim.opt_local.signcolumn._value) then
+  if Core.utils.boolme(vim.opt_local.signcolumn._value) then
     vim.opt_local.signcolumn = 'no'
     return
   end

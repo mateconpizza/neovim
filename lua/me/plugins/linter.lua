@@ -2,7 +2,7 @@
 
 local autocmd = vim.api.nvim_create_autocmd
 local shell_path = Core.env.xdg_home() .. '/dot/shellcheck/shellcheckrc'
-if not Core.file_exist(shell_path) then
+if not Core.utils.file_exist(shell_path) then
   Core.warnme('linting: shellcheckrc not found\n')
 end
 
@@ -28,6 +28,7 @@ return {
         -- ['gitcommit'] = { 'commitlint' },
         ['go'] = { 'golangcilint', 'typos' },
         ['htmldjango'] = { 'djlint' },
+        ['typescript'] = { 'eslint_d' },
         ['javascript'] = { 'eslint_d' },
         ['javascriptreact'] = { 'eslint_d' },
         ['make'] = { 'checkmake' },
@@ -35,7 +36,6 @@ return {
         ['markdown'] = { 'write_good' }, -- , 'alex' },
         ['python'] = { 'mypy' },
         ['sh'] = { 'shellcheck' },
-        ['typescript'] = { 'eslint_d' },
         ['typescriptreact'] = { 'eslint_d' },
       }
 

@@ -1,4 +1,4 @@
----@class me.utils.icons
+---@class me.core.icons
 local M = {}
 
 M.kind_icons = {
@@ -225,13 +225,9 @@ function M.all()
     bar = {
       a                 = '┃',
       b                 = '│',
-      c                 = '│',
-      d                 = '▏',
-      f                 = '│',
-      g                 = '¦',
-      h                 = '┊',
-      i                 = '▏',
-      j                 = '│',
+      c                 = '▏',
+      d                 = '¦',
+      e                 = '┊',
     },
     separators = {
       --  ╱         • ╍ 

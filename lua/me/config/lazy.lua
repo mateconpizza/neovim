@@ -31,19 +31,17 @@ vim.opt.runtimepath:prepend(lazypath)
 require('lazy').setup({
   spec = {
     { import = 'me.plugins' },
-    { import = 'me.plugins.lsp.servers.lualang' },
     { import = 'me.plugins.lsp.servers.golang' },
     { import = 'me.plugins.lsp.servers.python' },
     { import = 'me.plugins.lsp.servers.typescript' },
     { import = 'me.plugins.lsp.servers.bashlsp' },
     { import = 'me.plugins.lsp.servers.markdown' },
-    { import = 'me.plugins.lsp.servers.json' },
   },
   defaults = { lazy = false },
   install = { colorscheme = { 'retrobox' } },
   checker = { enabled = false },
   ui = {
-    browser = Core.getenv('BROWSER', 'firefox'),
+    browser = Core.env.get('BROWSER', 'firefox'),
   },
   diff = {
     cmd = 'terminal_git',

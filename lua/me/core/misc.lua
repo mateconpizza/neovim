@@ -1,4 +1,4 @@
----@class me.utils.misc
+---@class me.core.misc
 local M = {}
 
 -- inserts a banner using toilet

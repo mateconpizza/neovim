@@ -1,3 +1,5 @@
+local icon_indent = Core.icons.all().bar.b
+
 return {
 
   { -- https://github.com/nvim-tree/nvim-web-devicons
@@ -58,7 +60,7 @@ return {
       show_icons = false,
       tabpage_section = 'right',
     },
-    enabled = true,
+    enabled = false,
   },
 
   { -- https://github.com/NvChad/nvim-colorizer.lua
@@ -94,30 +96,33 @@ return {
     enabled = true,
   },
 
-  --[[ { -- https://github.com/lukas-reineke/indent-blankline.nvim
+  { -- https://github.com/lukas-reineke/indent-blankline.nvim
     'lukas-reineke/indent-blankline.nvim',
     event = 'VeryLazy',
     enabled = true,
     opts = {
       indent = {
-        char = '│',
-        tab_char = '│',
+        char = icon_indent,
+        tab_char = icon_indent,
+        -- char = '│',
+        -- tab_char = '│',
       },
       scope = { enabled = false },
       exclude = {
         filetypes = {
-          'help',
           'alpha',
           'dashboard',
-          'neo-tree',
-          'Trouble',
-          'trouble',
+          'fzf',
+          'help',
           'lazy',
-          'mason',
-          'notify',
-          'toggleterm',
           'lazyterm',
+          'mason',
+          'neo-tree',
+          'notify',
           'oil_preview',
+          'toggleterm',
+          'trouble',
+          'Trouble',
         },
       },
     },
@@ -130,8 +135,7 @@ return {
     enabled = true,
     event = 'VeryLazy',
     opts = {
-      -- symbol = "▏",
-      symbol = '│',
+      symbol = icon_indent,
       options = { try_as_border = true },
     },
     init = function()
@@ -139,6 +143,7 @@ return {
         pattern = {
           'alpha',
           'dashboard',
+          'fzf',
           'help',
           'lazy',
           'lazyterm',
@@ -146,15 +151,15 @@ return {
           'notify',
           'oil',
           'toggleterm',
-          'Trouble',
           'trouble',
+          'Trouble',
         },
         callback = function()
           vim.b.miniindentscope_disable = true
         end,
       })
     end,
-  }, ]]
+  },
 
   { -- https://github.com/echasnovski/mini.clue
     'echasnovski/mini.clue',

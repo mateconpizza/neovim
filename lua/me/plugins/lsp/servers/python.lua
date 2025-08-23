@@ -2,10 +2,9 @@
 return {
   { -- https://github.com/nvim-treesitter/nvim-treesitter
     'nvim-treesitter/nvim-treesitter',
-    opts = function(_, opts)
-      if type(opts.ensure_installed) == 'table' then
-        vim.list_extend(opts.ensure_installed, { 'ninja', 'python', 'rst', 'toml', 'requirements' })
-      end
+    branch = 'main',
+    opts = function()
+      Core.treesitter.add({ 'ninja', 'python', 'rst', 'toml', 'requirements' })
     end,
   },
 
@@ -21,7 +20,7 @@ return {
   { -- https://github.com/mfussenegger/nvim-dap
     'mfussenegger/nvim-dap',
     optional = true,
-    enabled = Core.env.debug,
+    enabled = true,
     dependencies = { -- https://github.com/mfussenegger/nvim-dap-python
       { 'mfussenegger/nvim-dap-python', ft = 'python', enabled = Core.env.debug },
     },

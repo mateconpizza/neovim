@@ -128,14 +128,13 @@
     "prefix": ["shnotifyme"],
     "body": [
       "function _notifyme {",
-      "\tlocal prog",
+      "\tlocal prog=\"\\${PROG:-\\${0##*/}}\"",
       "\tlocal mesg=\"<b>\\$1</b>\"",
-      "\tlocal icon=\"\\${2:-dialog-warning}\"",
-      "\tprog=\\$(echo \"\\${PROG:-\\${0##*/}}\" | tr '[:lower:]' '[:upper:]')",
-      "\tnotify-send -i \"\\$icon\" \"\\$prog\" \"\\$mesg\"",
+      "\tlocal icon=\"\\${2:-dialog-information}\"",
+      "\tnotify-send -i \"\\$icon\" \"\\${prog^^}\" \"\\$mesg\"",
       "}\n"
     ],
-    "description": "sends a notification with a message and an optional icon, using the PROG variable or default to 'info'"
+    "description": "sends a notification with a message and an optional icon, using the PROG variable or default to script name"
   },
   "is_available": {
     "prefix": ["shis_available"],
@@ -155,5 +154,15 @@
       "}\n"
     ],
     "description": "checks if a target is in the array"
+  },
+  "Lorem Ipsum Sentence": {
+    "prefix": "loremSent",
+    "body": "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
+    "description": "Lorem Ipsum Sentence"
+  },
+  "Lorem Ipsum Paragraph": {
+    "prefix": "loremPara",
+    "body": "Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.",
+    "description": "Lorem Ipsum Paragraph"
   }
 }

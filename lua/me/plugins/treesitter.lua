@@ -1,118 +1,95 @@
 -- treesitter.lua
+local parsers = {
+  'asm',
+  'bash',
+  'c',
+  'cmake',
+  'cpp',
+  'css',
+  'html',
+  'printf',
+  'query',
+  'rasi',
+  'regex',
+  'rust',
+  'sql',
+  'ssh_config',
+  'toml',
+  'vim',
+  'vimdoc',
+  'xresources',
+  'yaml',
+  'zathurarc',
+  -- lua
+  'lua',
+  'luadoc',
+  'luap',
+  -- json
+  'json',
+  'json5',
+  'jsonc',
+}
 
-return { -- https://github.com/nvim-treesitter/nvim-treesitter
-  {
+-- stylua: ignore start
+local parser_list = {
+  -- main
+  'asm', 'bash', 'c', 'cmake',
+  'cpp', 'css', 'html', 'printf',
+  'query', 'rasi', 'regex', 'rust',
+  'sql', 'ssh_config', 'toml', 'vim',
+  'vimdoc', 'xresources', 'yaml', 'zathurarc',
+  -- git
+  'diff', 'git_rebase', 'gitattributes',
+  'gitcommit', 'gitignore', 'git_config',
+  -- golang
+  'go', 'gomod', 'gowork', 'gosum', 'gotmpl',
+  -- lua
+  'lua', 'luadoc', 'luap',
+  -- markdown
+  'markdown', 'markdown_inline',
+  -- javascript|typescript
+  'tsx', 'javascript', 'typescript',
+  -- python
+  'ninja', 'python', 'rst',
+  'toml', 'requirements',
+  -- json
+  'json', 'json5', 'jsonc',
+}
+-- stylua: ignore end
+
+local textobjects = { -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/tree/main
+  'nvim-treesitter/nvim-treesitter-textobjects',
+  branch = 'main',
+  enabled = true,
+  config = Core.treesitter.text_objects_keymaps,
+}
+
+local tscontext = { -- https://github.com/nvim-treesitter/nvim-treesitter-context
+  'nvim-treesitter/nvim-treesitter-context',
+  opts = { enabled = true },
+  cmd = { 'TSContextEnable', 'TSContextDisable', 'TSContextToggle' },
+}
+
+return {
+  { -- https://github.com/nvim-treesitter/nvim-treesitter/tree/main
     'nvim-treesitter/nvim-treesitter',
     event = { 'BufReadPost', 'BufNewFile' },
+    branch = 'main',
     version = false,
     enabled = true,
-    lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
-    init = function(_)
-      require('nvim-treesitter.query_predicates')
-    end,
+    lazy = false,
     build = ':TSUpdate',
     cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall' },
-    keys = {
-      { '<c-space>', desc = 'Increment selection', mode = 'x' },
-      { '<bs>', desc = 'Schrink selection', mode = 'x' },
-    },
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-      'nvim-treesitter/nvim-treesitter-context',
-      -- 'windwp/nvim-ts-autotag',
-    },
-    opts_extend = { 'ensure_installed' },
-    ---@type TSConfig
-    ---@diagnostic disable-next-line: missing-fields
+    dependencies = { textobjects, tscontext },
+    config = Core.treesitter.setup,
+  },
+  { -- https://github.com/windwp/nvim-ts-autotag
+    'windwp/nvim-ts-autotag',
+    enabled = true,
     opts = {
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-        disable = { 'scratchpad' },
-      },
-      indent = { enable = true },
-      context = { enabled = true, mode = 'cursor', max_lines = 3 },
-      ensure_installed = {
-        'asm',
-        'c',
-        'cmake',
-        'cpp',
-        'css',
-        'html',
-        'printf',
-        'query',
-        'rasi',
-        'regex',
-        'rust',
-        'sql',
-        'toml',
-        'vim',
-        'vimdoc',
-        'yaml',
-        'xresources',
-        'zathurarc',
-      },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = '<C-space>',
-          node_incremental = '<C-space>',
-          scope_incremental = false,
-          node_decremental = '<bs>',
-        },
-      },
-      textobjects = {
-        enable = true,
-        swap = { enable = false },
-        move = {
-          enable = true,
-          goto_next_start = {
-            [']f'] = '@function.outer',
-            [']c'] = '@class.outer',
-            [']a'] = '@parameter.inner',
-          },
-          goto_next_end = {
-            [']F'] = '@function.outer',
-            [']C'] = '@class.outer',
-            [']A'] = '@parameter.inner',
-          },
-          goto_previous_start = {
-            ['[f'] = '@function.outer',
-            ['[c'] = '@class.outer',
-            ['[a'] = '@parameter.inner',
-          },
-          goto_previous_end = {
-            ['[F'] = '@function.outer',
-            ['[C'] = '@class.outer',
-            ['[A'] = '@parameter.inner',
-          },
-        },
-        select = {
-          enable = true,
-          keymaps = {
-            ['af'] = '@function.outer',
-            ['if'] = '@function.inner',
-
-            ['ac'] = '@class.outer',
-            ['ic'] = '@class.inner',
-
-            ['al'] = '@loop.outer',
-            ['il'] = '@loop.inner',
-
-            ['ad'] = '@conditional.outer',
-            ['id'] = '@conditional.inner',
-
-            ['aa'] = '@parameter.outer',
-            ['ia'] = '@parameter.inner',
-          },
-        },
+      aliases = {
+        ['gotmpl'] = 'html',
       },
     },
-    config = function(_, opts)
-      if type(opts.ensure_installed) == 'table' then
-        opts.ensure_installed = Core.dedup(opts.ensure_installed)
-      end
-      require('nvim-treesitter.configs').setup(opts)
-    end,
   },
 }

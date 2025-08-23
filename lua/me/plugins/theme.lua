@@ -8,7 +8,7 @@ return {
     enabled = Core.env.get('NVIM_THEME', '') == 'catppuccin',
     opts = function()
       return {
-        flavour = 'latte',
+        flavour = 'mocha',
         transparent_background = false,
         show_end_of_buffer = true,
         styles = {
@@ -60,7 +60,7 @@ return {
     priority = 1000,
     enabled = Core.env.get('NVIM_THEME', '') == 'gruvbox',
     config = function()
-      vim.g.gruvbox_material_enable_bold = false
+      vim.g.gruvbox_material_enable_bold = true
       vim.g.gruvbox_material_enable_italic = true
       vim.g.gruvbox_material_transparent_background = true
       vim.g.gruvbox_material_dim_inactive_windows = false
@@ -74,7 +74,7 @@ return {
       vim.g.gruvbox_material_current_word = 'underline'
       -- vim.g.gruvbox_material_menu_selection_background = 'red'
       vim.g.gruvbox_material_float_style = 'storm' -- 'storm', 'dim'
-      vim.g.gruvbox_material_foreground = 'orignal' -- 'material' 'original' 'mix'
+      vim.g.gruvbox_material_foreground = 'material' -- 'material' 'original' 'mix'
       vim.g.gruvbox_material_diagnostic_line_highlight = true
       vim.g.gruvbox_material_visual = 'grey background' -- 'reverse'
       vim.g.gruvbox_material_inlay_hints_background = 'none' -- 'dimmed'

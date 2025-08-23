@@ -7,7 +7,6 @@ return {
     'ibhagwan/fzf-lua',
     lazy = true,
     enabled = true,
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
     cmd = { 'FzfLua' },
     config = function()
       require('fzf-lua').setup({
@@ -75,6 +74,8 @@ return {
           },
         },
       })
+
+      vim.cmd('FzfLua register_ui_select')
     end,
     -- stylua: ignore start
     keys = {
@@ -157,6 +158,8 @@ return {
 
   { -- https://github.com/stevearc/oil.nvim
     'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
     opts = {
       delete_to_trash = true,
     },

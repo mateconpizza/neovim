@@ -1,6 +1,6 @@
----@class me.utils.lsp
+---@class me.core.lsp
 local M = {}
-M.diagnostic = require('me.utils.diagnostic')
+M.diagnostic = require('me.core.diagnostic')
 
 M.action = setmetatable({}, {
   __index = function(_, action)
@@ -17,7 +17,7 @@ M.action = setmetatable({}, {
 })
 
 M.code_action = function()
-  if not Core.has('fzf-lua') then
+  if not Core.utils.has_plugin('fzf-lua') then
     Core.warnme('fzf-lua not installed. https://github.com/ibhagwan/fzf-lua')
     return
   end
@@ -46,13 +46,23 @@ function M.on_attach(on_attach)
 end
 
 function M.capabilities()
-  local has_blink, blink = pcall(require, 'blink.cmp')
-  return vim.tbl_deep_extend(
-    'force',
-    {},
-    vim.lsp.protocol.make_client_capabilities(),
-    has_blink and blink.get_lsp_capabilities() or {}
-  )
+  local has_coq, coq = pcall(require, 'coq_nvim')
+  if has_coq then
+    return vim.tbl_deep_extend(
+      'force',
+      {},
+      vim.lsp.protocol.make_client_capabilities(),
+      has_coq and coq.lsp_ensure_capabilities() or {}
+    )
+  end
+
+  -- local has_blink, blink = pcall(require, 'blink.cmp')
+  -- return vim.tbl_deep_extend(
+  --   'force',
+  --   {},
+  --   vim.lsp.protocol.make_client_capabilities(),
+  --   has_blink and blink.get_lsp_capabilities() or {}
+  -- )
 end
 
 ---@param bufnr integer
@@ -79,6 +89,12 @@ function M.keymaps(bufnr)
   map(bufnr, '<leader>lwr', vim.lsp.buf.remove_workspace_folder, 'workspace remove Folder')
   map(bufnr, '<leader>lwl', function() vim.print(vim.lsp.buf.list_workspace_folders()) end, 'workspace list folders')
   -- stylua: ignore stop
+end
+
+M.servers = {}
+
+M.register = function(server)
+  table.insert(M.servers, server)
 end
 
 return M

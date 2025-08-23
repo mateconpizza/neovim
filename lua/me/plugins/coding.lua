@@ -15,13 +15,14 @@ return {
   { -- https://github.com/monkoose/neocodeium
     'monkoose/neocodeium',
     cmd = 'NeoCodeium',
+    enabled = true,
     keys = {
       {
         '<leader>lS',
         function()
           neocodeium_enabled = not neocodeium_enabled
           vim.cmd('NeoCodeium toggle')
-          Core.notify(neocodeium_enabled and 'neocodeium enabled' or 'neocodeium disabled')
+          Core.warnme(neocodeium_enabled and 'neocodeium enabled' or 'neocodeium disabled')
         end,
         desc = 'neocodeium toggle',
       },

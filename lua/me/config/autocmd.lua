@@ -1,6 +1,7 @@
 -- autocmd.lua
 local augroup = Core.augroup
 local autocmd = vim.api.nvim_create_autocmd
+local fugitive_called = false
 
 autocmd('TextYankPost', {
   group = augroup('highlight_yank'),
@@ -13,11 +14,12 @@ autocmd('TextYankPost', {
 autocmd({ 'FileType' }, {
   group = augroup('easy_close_Q'),
   pattern = {
+    'aerial',
     'dap-float',
     'fugitive',
     'git',
     'help',
-    'lspinfo',
+    'checkhealth',
     'man',
     'neotest-output',
     'neotest-output-panel',
@@ -82,4 +84,38 @@ autocmd({ 'BufEnter' }, {
   callback = function()
     vim.fn.chdir(Core.get_root())
   end,
+})
+
+autocmd('FileType', {
+  pattern = { 'gotmpl', 'gohtml' },
+  callback = function()
+    vim.bo.commentstring = '{{/* %s */}}'
+  end,
+})
+
+autocmd({ 'LspAttach' }, {
+  group = augroup('lsp_attach'),
+  callback = function()
+    vim.api.nvim_create_user_command('LspInfo', function()
+      vim.cmd('checkhealth vim.lsp')
+    end, {})
+    vim.api.nvim_create_user_command('LspLog', function()
+      local logpath = Core.env.xdg_state_home() .. '/nvim/' .. 'lsp.log'
+      vim.cmd('e ' .. logpath)
+    end, {})
+  end,
+  desc = 'Run :checkhealth vim.lsp',
+})
+
+autocmd('FileType', {
+  group = augroup('fugitiveDoom'),
+  pattern = '*fugitive*',
+  callback = function()
+    if not fugitive_called then
+      vim.print('fugitive_X disabled')
+      vim.keymap.set('n', 'X', '<Nop>', { buffer = true, silent = true })
+      fugitive_called = true
+    end
+  end,
+  desc = 'disable X (discard changes) in fugitive buffers',
 })

@@ -20,7 +20,6 @@ return {
     enabled = true,
     -- stylua: ignore
     keys = {
-      { '<leader>lF', function() Core.toggle.fmt_on_save() end, desc = 'toggle fmt on save' },
       {
         "<leader>F",
         function()
@@ -32,7 +31,7 @@ return {
     },
     init = function()
       local logpath = Core.env.xdg_state_home() .. '/nvim/' .. 'conform.log'
-      Core.gc_logfile(logpath, 500)
+      Core.utils.gc_logfile(logpath, 500)
     end,
     config = function()
       local conform = require('conform')
@@ -43,7 +42,7 @@ return {
         formatters_by_ft = {
           ['_'] = { 'trim_whitespace' },
           ['css'] = { 'prettier' },
-          ['go'] = { 'goimports-reviser', 'gofumpt', 'golines' },
+          ['go'] = { 'goimports-reviser', 'golines' },
           ['html'] = { 'prettier' },
           ['htmldjango'] = { 'djlint' },
           ['javascript'] = { 'prettier' },

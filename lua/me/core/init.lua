@@ -1,18 +1,22 @@
 ---@class Core
----@field toggle me.utils.toggle
----@field lsp me.utils.lsp
----@field icons me.utils.icons
----@field colors me.utils.colors
----@field git me.utils.git
----@field env me.utils.env
----@field misc me.utils.misc
----@field retain me.utils.retain
----@field fold me.utils.fold
+---@field colors me.core.colors
+---@field env me.core.env
+---@field fold me.core.fold
+---@field git me.core.git
+---@field icons me.core.icons
+---@field lsp me.core.lsp
+---@field lspp me.core.lspp
+---@field misc me.core.misc
+---@field retain me.core.retain
+---@field toggle me.core.toggle
+---@field treesitter me.core.treesitter
+---@field utils me.core.utils
+---@field ui me.core.ui
 local M = {}
 
 setmetatable(M, {
   __index = function(tbl, key)
-    tbl[key] = require('me.utils.' .. key)
+    tbl[key] = require('me.core.' .. key)
     return tbl[key]
   end,
 })
@@ -37,6 +41,7 @@ M.highlight = setmetatable({}, {
   end,
 })
 
+-- confirm
 ---@param mesg string
 ---@param choices string[]
 function M.confirm(mesg, choices)
@@ -56,6 +61,7 @@ function M.confirm(mesg, choices)
   return true
 end
 
+-- input from user
 ---@param mesg string
 ---@return string
 function M.input(mesg)
@@ -106,6 +112,7 @@ function M.get_root()
   return root
 end
 
+-- Find files using a finder
 function M.find_files()
   if vim.uv.fs_stat(vim.uv.cwd() .. '/.git') then
     require('fzf-lua').git_files()
@@ -120,55 +127,9 @@ function M.manpages()
   -- require('fzf-lua').manpages({ previewer = { 'man_native' } })
 end
 
----@param array string[]
----@param target any
----@return boolean
-function M.contains(array, target)
-  for _, value in ipairs(array) do
-    if value == target then
-      return true
-    end
-  end
-  return false
-end
-
----@param value string
----@return boolean
-function M.boolme(value)
-  local falseish = { 'false', 'no', 'n', '1', 1, false, nil, 'nil' }
-  if M.contains(falseish, value) then
-    return false
-  end
-
-  return true
-end
-
 ---@param name string
 function M.augroup(name)
   return vim.api.nvim_create_augroup('me_' .. name, { clear = true })
-end
-
----@param name string
-function M.get_plugin(name)
-  return require('lazy.core.config').spec.plugins[name]
-end
-
----@param varname string
----@param default any: if varname is not set
----@return any
-function M.getenv(varname, default)
-  -- TODO: checkout `vim.env`
-  local value = os.getenv(varname)
-  if not value then
-    return default
-  end
-  return value
-end
-
----@param plugin string
----@return boolean
-function M.has(plugin)
-  return M.get_plugin(plugin) ~= nil
 end
 
 --- checks if a given command is executable
@@ -178,6 +139,7 @@ M.is_executable = function(cmd)
   return cmd and vim.fn.executable(cmd) == 1 or false
 end
 
+-- add keymap
 ---@param keys string
 ---@param func function|string
 ---@param desc string
@@ -187,6 +149,7 @@ M.keymap = function(keys, func, desc, mode)
   vim.keymap.set(mode, keys, func, { desc = desc })
 end
 
+-- keymap for buffer
 ---@param bufnr number
 ---@param keys string
 ---@param func function|string
@@ -197,104 +160,21 @@ M.keymap_buf = function(bufnr, keys, func, desc, mode)
   vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = desc })
 end
 
----@generic T
----@param list T[]
----@return T[]
-function M.dedup(list)
-  local ret = {}
-  local seen = {}
-  for _, v in ipairs(list) do
-    if not seen[v] then
-      table.insert(ret, v)
-      seen[v] = true
-    end
-  end
-  return ret
-end
-
----@param cmd string
----@return string|nil
-M.which = function(cmd)
-  local result = io.popen('which ' .. cmd, 'r')
-  if not result then
-    return nil
-  end
-
-  local path = result:read('*a')
-  if path == '' then
-    return nil
-  end
-
-  result:close()
-  return path
-end
-
+-- warn user
 ---@param s string
 M.warnme = function(s)
   vim.api.nvim_echo({ { s, 'WarningMsg' } }, true, {})
 end
 
+-- notify user
 ---@param s string
 M.notify = function(s)
   vim.notify(s)
 end
 
----@return boolean
----@param f string
-M.file_exist = function(f)
-  local file = io.open(f, 'r')
-  if not file then
-    return false
-  end
-
-  return true
-end
-
----@param fname string
----@param t table
-M.save_json = function(fname, t)
-  local data = vim.fn.json_encode(t)
-  if not data then
-    Core.warnme('write: failed to encode data to JSON')
-    return false
-  end
-
-  local success, err = pcall(vim.fn.writefile, { data }, fname)
-  if not success then
-    Core.warnme('write: ' .. err)
-  end
-
-  return success
-end
-
+-- set root
 function M.set_root()
   vim.fn.chdir(Core.get_root())
-end
-
--- trim string
-function M.trim(str)
-  return str:gsub('^%s*(.-)%s*$', '%1')
-end
-
--- garbage collector log file
----@param path string
----@param size_kb number
-function M.gc_logfile(path, size_kb)
-  size_kb = size_kb or 500
-  local logfile = io.open(path, 'r')
-  if not logfile then
-    return
-  end
-
-  local size_bytes = logfile:seek('end')
-  logfile:close()
-
-  local kilobytes = size_bytes / 1024
-
-  if kilobytes > size_kb then
-    Core.warnme(string.format('Log file size: %.2f KB exceeds limit of %d KB\nRemoving %s', kilobytes, size_kb, path))
-    os.remove(path)
-  end
 end
 
 return M
