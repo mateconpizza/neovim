@@ -4,12 +4,14 @@ return {
   { -- https://github.com/nvim-neotest/neotest
     'nvim-neotest/neotest',
     enabled = Core.env.testing,
-    commit = "3c81345c28cd639fcc02843ed3653be462f47024",
+    -- https://github.com/nvim-neotest/neotest/issues/531
+    commit = '52fca67',
     dependencies = {
       'nvim-neotest/nvim-nio',
       'nvim-lua/plenary.nvim',
     },
     opts = {
+      log_level = vim.log.levels.DEBUG,
       status = { virtual_text = true },
       output = { open_on_run = true },
       quickfix = {
