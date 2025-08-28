@@ -3,8 +3,6 @@ return {
   { -- https://github.com/j-hui/fidget.nvim
     'j-hui/fidget.nvim',
     event = 'LspAttach',
-    -- https://github.com/j-hui/fidget.nvim/issues/288
-    commit = '17ce5ac3b4e5ef590d4f4fd7d91e8fc233114074',
     opts = {
       notification = {
         window = { winblend = 0 },
