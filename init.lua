@@ -1,10 +1,11 @@
 _G.Core = require('me.core')
+_G.Config = require('me.config')
 
 -- Core.lspp.load_registered()
 -- Core.lspp.setup()
 -- Core.utils.create_floating_window({ lines = Core.lspp.content, width = 100, height = 25 })
 
-require('me.config.options')
+Config.options.setup()
 require('me.config.lazy')
 
 -- Setup WinBar
