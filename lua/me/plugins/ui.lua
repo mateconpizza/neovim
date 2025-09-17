@@ -53,16 +53,6 @@ return {
     enabled = Core.env.get('NVIM_THEME', '') ~= 'retrobox',
   },
 
-  { -- https://github.com/echasnovski/mini.nvim
-    'echasnovski/mini.tabline',
-    version = '*',
-    opts = {
-      show_icons = false,
-      tabpage_section = 'right',
-    },
-    enabled = false,
-  },
-
   { -- https://github.com/NvChad/nvim-colorizer.lua
     'NvChad/nvim-colorizer.lua',
     cmd = {

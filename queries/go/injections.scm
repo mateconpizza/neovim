@@ -1,4 +1,6 @@
 ; Highlight SQL code inside string
+;; inherits: go
+;; extends
 
 ; Go code example with interpreted string literal
 ; rows, err := db.Query("SELECT * FROM tasks")
@@ -377,3 +379,9 @@
         (raw_string_literal) @sql
     )
 )
+
+;; Highlight TODO, FIXME, BUG, etc. inside comments
+(
+ (comment) @comment
+ (#match? @comment "(TODO|FIXME|BUG|HACK|XXX)")
+) @comment.todo

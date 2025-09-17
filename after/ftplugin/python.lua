@@ -12,6 +12,3 @@ if vim.g.colors_name == 'gruvbox-material' then
   hl(0, '@keyword.exception.python', { link = 'RedItalic', default = true })
   hl(0, '@keyword.python', { link = 'RedItalic', default = true })
 end
-
--- https://neovim.io/doc/user/fold.html#fold-indent
--- vim.opt_local.foldmethod = 'indent'

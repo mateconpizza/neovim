@@ -26,6 +26,7 @@ return {
         ['*'] = { 'codespell', 'misspell', 'typos' },
         -- ['c'] = { 'cpplint' },
         -- ['gitcommit'] = { 'commitlint' },
+        ['css'] = { 'stylelint' },
         ['go'] = { 'golangcilint', 'typos' },
         ['htmldjango'] = { 'djlint' },
         ['typescript'] = { 'eslint_d' },

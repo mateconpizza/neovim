@@ -6,6 +6,7 @@ local hl = vim.api.nvim_set_hl
 
 hl(0, '@constant.go', { link = 'Purple', default = true })
 hl(0, '@lsp.typemod.variable.readonly.go', { link = 'Purple' })
+
 -- hl(0, '@keyword.conditional.go', { link = 'RedItalic' })
 -- hl(0, '@lsp.type.namespace.go', { link = 'Purple' })
 -- hl(0, "@lsp.typemod.variable.bool.go", { link = "Purple" })

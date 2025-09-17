@@ -1,4 +1,6 @@
 ; Highlight SQL code inside string
+;; inherits: python,py
+;; extends
 
 ; Python code example
 ; connection = get_mysql_connection()
