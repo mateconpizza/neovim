@@ -6,6 +6,19 @@ _G.Core = require('me.core')
 
 require('me.config.options')
 require('me.config.lazy')
+
+-- Setup WinBar
+Core.ui.winbar.setup({
+  enabled = true,
+  file_icon = false,
+  show_single_buffer = false,
+  git_branch = false,
+  lsp_status = false,
+  diagnostics = {
+    show_detail = false,
+  },
+})
+
 -- require('me.config.colorscheme').load_highlight_mods()
 -- require('me.config.colorscheme').setup()
 
