@@ -16,6 +16,20 @@ M.action = setmetatable({}, {
   end,
 })
 
+---@class LspCommand: lsp.ExecuteCommandParams
+---@field open? boolean
+---@field handler? lsp.Handler
+
+---@param opts LspCommand
+function M.execute(opts)
+  local params = {
+    command = opts.command,
+    arguments = opts.arguments,
+  }
+
+  return vim.lsp.buf_request(0, 'workspace/executeCommand', params, opts.handler)
+end
+
 M.code_action = function()
   if not Core.utils.has_plugin('fzf-lua') then
     Core.warnme('fzf-lua not installed. https://github.com/ibhagwan/fzf-lua')
@@ -46,23 +60,13 @@ function M.on_attach(on_attach)
 end
 
 function M.capabilities()
-  local has_coq, coq = pcall(require, 'coq_nvim')
-  if has_coq then
-    return vim.tbl_deep_extend(
-      'force',
-      {},
-      vim.lsp.protocol.make_client_capabilities(),
-      has_coq and coq.lsp_ensure_capabilities() or {}
-    )
-  end
-
-  -- local has_blink, blink = pcall(require, 'blink.cmp')
-  -- return vim.tbl_deep_extend(
-  --   'force',
-  --   {},
-  --   vim.lsp.protocol.make_client_capabilities(),
-  --   has_blink and blink.get_lsp_capabilities() or {}
-  -- )
+  local has_blink, blink = pcall(require, 'blink.cmp')
+  return vim.tbl_deep_extend(
+    'force',
+    {},
+    vim.lsp.protocol.make_client_capabilities(),
+    has_blink and blink.get_lsp_capabilities() or {}
+  )
 end
 
 ---@param bufnr integer

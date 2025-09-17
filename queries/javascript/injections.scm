@@ -1,4 +1,6 @@
 ; Highlight SQL code inside string
+;; inherits: javascript,jsx
+;; extends
 
 (call_expression
     (member_expression

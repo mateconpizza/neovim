@@ -5,9 +5,9 @@ Core.lsp.on_attach(function(_, bufnr)
   Core.lsp.keymaps(bufnr)
   -- diagnostics
   vim.diagnostic.config(Core.lsp.diagnostic.defaults)
-  -- clean lsp-log if > 500K
+  -- clean lsp-log if > 1024K
   local logpath = Core.env.xdg_state_home() .. '/nvim/' .. 'lsp.log'
-  Core.utils.gc_logfile(logpath, 500)
+  Core.utils.gc_logfile(logpath, 1024)
 end)
 
 vim.lsp.config('*', { capabilities = Core.lsp.capabilities() })
