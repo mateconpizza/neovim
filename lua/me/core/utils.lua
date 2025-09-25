@@ -168,4 +168,11 @@ M.create_floating_window = function(opts)
 
   return { buf = buf, win = win }
 end
+
+---@param winid integer
+---@return boolean
+function M.is_float(winid)
+  return vim.api.nvim_win_get_config(winid).relative ~= ''
+end
+
 return M

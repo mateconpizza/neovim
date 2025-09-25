@@ -3,6 +3,8 @@
 local M = {}
 
 ---@class WinBar.Diagnostic
+---@field enabled? boolean: enable diagnostics
+---@field mini? boolean: minimalist mode
 ---@field bug_icon? string: show bug icon
 ---@field show_detail? boolean: show detail
 
@@ -51,6 +53,7 @@ M.opts = {
   },
 
   diagnostics = {
+    enabled = false,
     bug_icon = Core.icons.dap.signs.breakpoint or '🐛',
     show_detail = true,
   },
@@ -83,24 +86,27 @@ function M.is_special_buffer()
 end
 
 function M.render()
-  -- Skip special buffers
   if M.is_special_buffer() then
     return ''
   end
 
-  -- Show only if > 1 buffer or always show (configurable)
   if not M.opts.show_single_buffer then
-    local all_buffers = vim.tbl_filter(function(buf)
-      return vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_name(buf) ~= ''
+    local visible_buffers = vim.tbl_filter(function(buf)
+      -- Count visibles buffers only. Ignore floating windows (fzf-lua, Mason, etc)
+      return vim.api.nvim_buf_is_loaded(buf)
+        and vim.api.nvim_buf_get_name(buf) ~= ''
+        and Core.ui.utils.is_visible_in_normal_win(buf)
     end, vim.api.nvim_list_bufs())
-    if #all_buffers < 2 then
+
+    if #visible_buffers < 2 then
       return ''
     end
   end
 
   local bufname = vim.api.nvim_buf_get_name(0)
   if bufname == '' then
-    return '[No Name]'
+    -- return '[No Name]'
+    return ''
   end
 
   local filename = vim.fn.fnamemodify(bufname, ':t')
@@ -132,12 +138,25 @@ function M.render()
   end
 
   -- Diagnostics
-  local diagnostics = Core.ui.utils.get_diagnostics()
-  if diagnostics ~= '' then
-    table.insert(components, M.opts.diagnostics.bug_icon .. ' ')
-    if M.opts.diagnostics.show_detail then
-      table.insert(components, diagnostics)
-      table.insert(components, ' ')
+  if M.opts.diagnostics.enabled then
+    local diagnostics
+    if M.opts.diagnostics.mini then
+      diagnostics = Core.ui.utils.get_diagnostics_mini()
+    else
+      diagnostics = Core.ui.utils.get_diagnostics()
+    end
+    if diagnostics ~= '' then
+      -- Add bug_icon
+      -- FIX: drop the `bug_icon`
+      if M.opts.diagnostics.bug_icon then
+        table.insert(components, '%#ErrorMsg#' .. M.opts.diagnostics.bug_icon .. '%*' .. ' ')
+      end
+
+      -- Diagnostics detail
+      if M.opts.diagnostics.show_detail then
+        table.insert(components, diagnostics)
+        table.insert(components, ' ')
+      end
     end
   end
 

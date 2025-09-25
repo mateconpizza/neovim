@@ -1,7 +1,6 @@
 ---@class me.core.ui
 ---@field winbar me.core.ui.winbar
 ---@field utils me.core.ui.utils
-
 local M = {}
 
 setmetatable(M, {
