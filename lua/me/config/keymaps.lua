@@ -76,11 +76,7 @@ map('<leader>bS', toggle.signcolumn, 'toggle signcolumn')
 map('<C-w>m', toggle.maximize, 'toggle max')
 map('<leader>br', Core.set_root, 'set root')
 map('<leader>bB', function()
-  if vim.o.background == 'dark' then
-    vim.o.background = 'light'
-  else
-    vim.o.background = 'dark'
-  end
+  vim.o.background = (vim.o.background == 'dark' and 'light' or 'dark')
 end, 'set background')
 
 -- misc
