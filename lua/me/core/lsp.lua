@@ -16,6 +16,9 @@ M.action = setmetatable({}, {
   end,
 })
 
+---Registered LSP names
+M.servers = {}
+
 ---@class LspCommand: lsp.ExecuteCommandParams
 ---@field open? boolean
 ---@field handler? lsp.Handler
@@ -95,10 +98,35 @@ function M.keymaps(bufnr)
   -- stylua: ignore stop
 end
 
-M.servers = {}
+function M.get_servers()
+  return Core.utils.deduplicate(M.servers)
+end
 
-M.register = function(server)
-  table.insert(M.servers, server)
+---Register one or more servers.
+---@param names string|string[] A server name or a table of server names
+---@return table # Returns the module table `M` for chaining
+function M.register(names)
+  -- Table
+  if type(names) == 'table' then
+    for _, name in ipairs(names) do
+      table.insert(M.servers, name)
+    end
+  -- String
+  elseif type(names) == 'string' then
+    table.insert(M.servers, names)
+  else
+    error('M.enable expects a string or table of strings')
+  end
+
+  return M
+end
+
+---Enables all registered LSPs.
+---@return nil
+function M.start()
+  for _, name in pairs(M.servers) do
+    vim.lsp.enable(name)
+  end
 end
 
 return M

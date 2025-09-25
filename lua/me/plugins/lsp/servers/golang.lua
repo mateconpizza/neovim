@@ -111,13 +111,18 @@ return {
     dependencies = {
       {
         'fredrikaverpil/neotest-golang', -- https://github.com/fredrikaverpil/neotest-golang
+        version = '*',
         enabled = Core.env.testing,
+        build = function()
+          vim.cmd([[:TSUpdate go]])
+        end,
       },
     },
     opts = {
       adapters = {
         ['neotest-golang'] = {
           go_test_args = { '-v', '-race', '-count=1', '-timeout=60s' },
+          runner = 'gotestsum',
           dap_go_enabled = true,
         },
       },
