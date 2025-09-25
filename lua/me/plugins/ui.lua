@@ -1,4 +1,5 @@
 local icon_indent = Core.icons.all().bar.b
+local colors = Core.colors.current()
 
 return {
 
@@ -9,8 +10,13 @@ return {
       override_by_extension = {
         ['gomarks'] = {
           icon = Core.icons.lsp.kinds.Field,
-          color = '#81e043',
+          color = colors.green,
           name = 'Bookmark',
+        },
+        ['gohtml'] = {
+          icon = '',
+          color = colors.red,
+          name = 'GoHTML',
         },
       },
     },

@@ -12,8 +12,8 @@ return {
       require('fzf-lua').setup({
         Core.env.get('TMUX_FZF_PROFILE', default_fzf_profile),
         defaults = {
-          file_icons = false,
-          git_icons = false,
+          file_icons = true,
+          git_icons = true,
         },
         oldfiles = {
           include_current_session = true,
@@ -75,7 +75,7 @@ return {
         },
       })
 
-      vim.cmd('FzfLua register_ui_select')
+      require('fzf-lua').register_ui_select()
     end,
     -- stylua: ignore start
     keys = {

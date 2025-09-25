@@ -54,7 +54,8 @@ function M.setup_editor()
   opt.spelllang     = { 'en_us', 'es' } -- spellcheck
   opt.cursorline    = false         -- Enable highlighting of the current line
   opt.grepformat    = '%f:%l:%c:%m' -- grep
-  opt.grepprg       = 'rg --vimgrep'-- grep
+  opt.grepprg       = 'rg --vimgrep --color=never' -- grep
+  opt.wildignore:append(Core.defaults.wildignore)
   opt.conceallevel  = 1             -- Hide * markup for bold and italic
   opt.wildmode      = 'longest:full,full' -- Command-line completion mode
   opt.winminwidth   = 5             -- Minimum window width

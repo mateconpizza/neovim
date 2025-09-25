@@ -10,6 +10,15 @@ local fmtcfg = {
   golines = {
     args = { '-m', '110' },
   },
+  djlint = {
+    args = {
+      '--profile=golang',
+      '--indent=2',
+      '--reformat',
+      '--extension=gohtml',
+      '-',
+    },
+  },
 }
 
 return {
@@ -34,31 +43,35 @@ return {
       Core.utils.gc_logfile(logpath, 500)
     end,
     config = function()
-      local conform = require('conform')
-      conform.formatters['goimports-reviser'] = fmtcfg.goimports
-      conform.formatters['tex-fmt'] = fmtcfg.texfmt
-      conform.formatters['golines'] = fmtcfg.golines
-      conform.setup({
+      local c = require('conform')
+      c.formatters['goimports-reviser'] = fmtcfg.goimports
+      c.formatters['tex-fmt'] = fmtcfg.texfmt
+      c.formatters['golines'] = fmtcfg.golines
+      c.formatters['djlint'] = fmtcfg.djlint
+
+      c.setup({
         formatters_by_ft = {
           ['_'] = { 'trim_whitespace' },
-          ['css'] = { 'prettier' },
-          ['go'] = { 'goimports-reviser', 'golines' },
-          ['html'] = { 'prettier' },
-          ['htmldjango'] = { 'djlint' },
-          ['javascript'] = { 'prettier' },
-          ['javascriptreact'] = { 'prettier' },
-          ['json'] = { 'prettier' },
-          ['jsonc'] = { 'prettier' },
-          ['lua'] = { 'stylua' },
-          ['markdown'] = { 'prettier' },
+          css = { 'prettier' },
+          dart = { 'dart_format' },
+          go = { 'goimports-reviser', 'golines' },
+          gotmpl = { 'djlint' },
+          html = { 'prettier' },
+          htmldjango = { 'djlint' },
+          javascript = { 'prettier' },
+          javascriptreact = { 'prettier' },
+          json = { 'prettier' },
+          jsonc = { 'prettier' },
+          lua = { 'stylua' },
+          markdown = { 'prettier' },
           ['markdown.mdx'] = { 'prettier' },
-          ['python'] = { 'ruff_format', 'ruff_organize_imports' },
-          ['sh'] = { 'shfmt' },
-          ['sql'] = { 'sqlfmt' },
-          ['tex'] = { 'tex-fmt' },
-          ['typescript'] = { 'prettier' },
-          ['typescriptreact'] = { 'prettier' },
-          ['yaml'] = { 'prettier' },
+          python = { 'ruff_format', 'ruff_organize_imports' },
+          sh = { 'shfmt' },
+          sql = { 'sqlfmt' },
+          tex = { 'tex-fmt' },
+          typescript = { 'prettier' },
+          typescriptreact = { 'prettier' },
+          yaml = { 'prettier' },
         },
 
         formatters = {

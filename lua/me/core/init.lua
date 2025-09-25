@@ -12,6 +12,8 @@
 ---@field treesitter me.core.treesitter
 ---@field utils me.core.utils
 ---@field ui me.core.ui
+---@field defaults me.core.defaults
+---@field commands me.core.commands
 local M = {}
 
 setmetatable(M, {
@@ -40,6 +42,8 @@ M.highlight = setmetatable({}, {
     vim.cmd(table.concat(cmd, ' '))
   end,
 })
+
+M.config = {}
 
 -- confirm
 ---@param mesg string

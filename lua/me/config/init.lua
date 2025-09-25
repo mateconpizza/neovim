@@ -1,5 +1,8 @@
 ---@class Config
 ---@field options me.config.options
+---@field keybinds me.config.keybinds
+---@field autocmd me.config.autocmds
+---@field lazy me.config.lazy
 local M = {}
 
 setmetatable(M, {

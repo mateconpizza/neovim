@@ -48,11 +48,3 @@ local toggle_term = function()
 end
 
 vim.api.nvim_create_user_command('FloatTerm', toggle_term, {})
-
--- this autocmd interferes with neotest
--- local autocmd = vim.api.nvim_create_autocmd
--- autocmd({ 'TermOpen' }, {
---   callback = function()
---     vim.cmd('startinsert')
---   end,
--- })
