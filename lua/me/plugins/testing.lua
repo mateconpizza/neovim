@@ -5,7 +5,6 @@ return {
     'nvim-neotest/neotest',
     enabled = Core.env.testing,
     -- https://github.com/nvim-neotest/neotest/issues/531
-    commit = '52fca67',
     dependencies = {
       'nvim-neotest/nvim-nio',
       'nvim-lua/plenary.nvim',
