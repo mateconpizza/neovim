@@ -45,4 +45,22 @@ M.defaults = {
   },
 }
 
+function M.show_buffer_diagnostics()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local diagnostics = vim.diagnostic.get(bufnr)
+
+  if #diagnostics == 0 then
+    vim.notify('diagnostic: no diagnostics found for current buffer', vim.log.levels.INFO)
+    return
+  end
+
+  vim.diagnostic.setqflist({
+    title = 'Current File Diagnostics',
+    context = 0,
+    id = bufnr,
+  })
+
+  vim.cmd('copen')
+end
+
 return M
