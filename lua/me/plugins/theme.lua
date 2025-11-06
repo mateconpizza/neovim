@@ -132,4 +132,32 @@ return {
       tokyonight.load()
     end,
   },
+
+  { -- https://github.com/mateconpizza/retrobox.nvim
+    'mateconpizza/retrobox.nvim',
+    enabled = true,
+    opts = {
+      styles = {
+        Function = { bold = false },
+        Keyword = { italic = true },
+        VertSplit = { bg = 'NONE', bold = true },
+      },
+      integrations = {
+        lsp = true,
+        neotest = true,
+        treesitter = true,
+        treesitter_context = false,
+        fzf = false,
+        gitsigns = false,
+        dap = false,
+        dap_ui = false,
+        fidget = false,
+        blink_cmp = true,
+        leap = false,
+        mini_clue = false,
+        mini_indentscope = false,
+        aerial = true,
+      },
+    },
+  },
 }
