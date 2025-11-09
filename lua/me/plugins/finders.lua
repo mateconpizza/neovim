@@ -171,33 +171,14 @@ return {
     enabled = true,
   },
 
-  { -- https://github.com/ggandor/flit.nvim
-    'ggandor/flit.nvim',
-    keys = function()
-      local ret = {}
-      for _, key in ipairs({ 'f', 'F', 't', 'T' }) do
-        ret[#ret + 1] = { key, mode = { 'n', 'x', 'o' }, desc = key }
-      end
-      return ret
-    end,
-    opts = { labeled_modes = 'nx' },
-    enabled = true,
-  },
-
   { -- https://github.com/ggandor/leap.nvim
     'ggandor/leap.nvim',
-    keys = {
-      { 's', '<Plug>(leap)', desc = 'leap forward to', mode = { 'n', 'x', 'o' } },
-      { 'S', '<Plug>(leap-backward)', desc = 'leap backward to', mode = { 'n', 'x', 'o' } },
-      { 'gs', '<Plug>(leap-from-window)', desc = 'leap from windows', mode = { 'n', 'x', 'o' } },
-    },
-    config = function(_, opts)
-      local leap = require('leap')
-      for k, v in pairs(opts) do
-        leap.opts[k] = v
-      end
-      vim.keymap.del({ 'x', 'o' }, 'x')
-      vim.keymap.del({ 'x', 'o' }, 'X')
+    config = function()
+      local mode = { 'n', 'x', 'o' }
+      local nmap = Core.keymap
+      nmap('s', '<Plug>(leap)', 'leap forward to', mode)
+      nmap('S', '<Plug>(leap-backward)', 'leap backward to', mode)
+      nmap('gs', '<Plug>(leap-from-window)', 'leap from windows', mode)
     end,
     enabled = true,
   },
