@@ -8,7 +8,7 @@ local fmtcfg = {
     args = { '-s', '--nowrap' },
   },
   golines = {
-    args = { '-m', '110' },
+    args = { '-m', '120' },
   },
   djlint = {
     args = {

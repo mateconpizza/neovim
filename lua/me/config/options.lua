@@ -88,14 +88,7 @@ function M.setup_ui()
     C = true, -- don't give messages while scanning for ins-completion items, for instance "scanning tags"
   })
 
-  opt.fillchars = {
-    diff = '╱',
-    eob = '~',
-    fold = ' ',
-    foldclose = '',
-    foldopen = '',
-    foldsep = ' ',
-  }
+  opt.fillchars = Core.icons.fillchars
 
   opt.formatoptions = 'jcroqlnt'
   -- j – auto-remove comment leaders when joining lines (e.g., removes -- in Lua).

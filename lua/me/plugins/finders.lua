@@ -135,7 +135,7 @@ return {
     },
   },
 
-  { -- https://github.com/haaag/projects.nvim
+  { -- https://github.com/mateconpizza/projects.nvim
     dir = '~/dev/git/lualang/projects.nvim',
     dependencies = {
       'ibhagwan/fzf-lua',
@@ -145,9 +145,9 @@ return {
       previewer = {
         enabled = true,
       },
-      color = true,
+      color = false,
       icons = {
-        enabled = true,
+        enabled = false,
       },
     },
     keys = {

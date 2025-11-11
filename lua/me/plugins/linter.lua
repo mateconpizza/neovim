@@ -36,7 +36,7 @@ return {
         ['*'] = { 'codespell', 'misspell', 'typos' },
         ['_'] = { 'codespell', 'misspell', 'typos' },
         -- ['c'] = { 'cpplint' },
-        gitcommit = { 'commitlint' },
+        -- gitcommit = { 'commitlint' },
         css = { 'stylelint' },
         go = { 'golangcilint', 'typos' },
         gohtml = { 'djlint' },

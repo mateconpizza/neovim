@@ -228,6 +228,10 @@ function M.all()
       c                 = '▏',
       d                 = '¦',
       e                 = '┊',
+      triple_dash_light = '┆',
+      triple_dash_heavy = '┇',
+      quad_dash_light   = '┊',
+      quad_dash_heavy   = '┋',
     },
     separators = {
       --  ╱         • ╍ 
@@ -236,5 +240,18 @@ function M.all()
     },
   }
 end
+
+M.fillchars = {
+  diff = '╱',
+  eob = '~',
+  fold = ' ',
+  foldclose = '',
+  foldopen = '',
+  foldsep = ' ',
+  horiz = '─',
+  horizup = '┴',
+  horizdown = '┬',
+  vert = M.all().bar.b,
+}
 
 return M

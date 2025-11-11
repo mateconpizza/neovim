@@ -22,21 +22,6 @@ function M.setup_easy_close()
   autocmd({ 'FileType' }, {
     group = augroup('easy_close_Q'),
     pattern = Core.defaults.exclude_filetypes,
-    -- pattern = {
-    --   'aerial',
-    --   'dap-float',
-    --   'fugitive',
-    --   'git',
-    --   'help',
-    --   'checkhealth',
-    --   'man',
-    --   'neotest-output',
-    --   'neotest-output-panel',
-    --   'neotest-summary',
-    --   'netrw',
-    --   'qf',
-    --   'startuptime',
-    -- },
     callback = function(event)
       vim.bo[event.buf].buflisted = false
       vim.keymap.set('n', 'Q', '<CMD>close<CR>', { buffer = event.buf, silent = true })
@@ -54,10 +39,6 @@ function M.setup_restore_cursor()
       if vim.tbl_contains(Core.defaults.exclude_filetypes, ft) then
         return
       end
-      --
-      -- if ft == 'gitcommit' then
-      --   return
-      -- end
 
       local mark = vim.api.nvim_buf_get_mark(0, '"')
       local lcount = vim.api.nvim_buf_line_count(0)

@@ -85,7 +85,7 @@ return {
           name = 'Debug with env',
           type = 'delve',
           request = 'launch',
-          program = '${file}',
+          program = '.',
           env = load_env_file,
         },
         { -- configuration for debugging test files

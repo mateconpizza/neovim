@@ -22,7 +22,7 @@ return {
     optional = true,
     enabled = true,
     dependencies = { -- https://github.com/mfussenegger/nvim-dap-python
-      { 'mfussenegger/nvim-dap-python', ft = 'python', enabled = Core.env.debug },
+      { 'mfussenegger/nvim-dap-python', ft = 'python', enabled = true },
     },
     -- stylua: ignore
     keys = {

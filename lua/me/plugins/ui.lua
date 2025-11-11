@@ -105,21 +105,7 @@ return {
       },
       scope = { enabled = false },
       exclude = {
-        filetypes = {
-          'alpha',
-          'dashboard',
-          'fzf',
-          'help',
-          'lazy',
-          'lazyterm',
-          'mason',
-          'neo-tree',
-          'notify',
-          'oil_preview',
-          'toggleterm',
-          'trouble',
-          'Trouble',
-        },
+        filetypes = Core.defaults.exclude_filetypes,
       },
     },
     main = 'ibl',
@@ -136,20 +122,7 @@ return {
     },
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = {
-          'alpha',
-          'dashboard',
-          'fzf',
-          'help',
-          'lazy',
-          'lazyterm',
-          'mason',
-          'notify',
-          'oil',
-          'toggleterm',
-          'trouble',
-          'Trouble',
-        },
+        pattern = Core.defaults.exclude_filetypes,
         callback = function()
           vim.b.miniindentscope_disable = true
         end,
