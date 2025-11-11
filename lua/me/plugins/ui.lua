@@ -47,49 +47,46 @@ return {
     enabled = true,
   },
 
-  { -- my.statusline.nvim
-    dir = '~/dev/lua/stat.nvim',
-    cmd = 'Statusline',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  {
+    'nvim-mini/mini.hipatterns',
+    version = '*',
     keys = {
-      { '<leader>bl', '<CMD>Statusline<CR>', desc = 'toggle statusline' },
-    },
-    opts = {},
-    lazy = true,
-    enabled = Core.env.get('NVIM_THEME', '') ~= 'retrobox',
-  },
-
-  { -- https://github.com/NvChad/nvim-colorizer.lua
-    'NvChad/nvim-colorizer.lua',
-    cmd = {
-      'ColorizerAttachToBuffer',
-      'ColorizerDetachFromBuffer',
-      'ColorizerReloadAllBuffers',
-      'ColorizerToggle',
-    },
-    keys = {
-      { '<leader>bc', '<CMD>ColorizerToggle<CR>', desc = 'toggle colorizer' },
-    },
-    opts = {
-      filetypes = { '*', '!lazy' },
-      buftype = { '*', '!prompt', '!nofile', '!TelescopePrompt' },
-      user_default_options = {
-        RGB = true, -- #RGB hex codes
-        RRGGBB = true, -- #RRGGBB hex codes
-        names = false, -- "Name" codes like Blue
-        RRGGBBAA = true, -- #RRGGBBAA hex codes
-        AARRGGBB = false, -- 0xAARRGGBB hex codes
-        rgb_fn = true, -- CSS rgb() and rgba() functions
-        hsl_fn = true, -- CSS hsl() and hsla() functions
-        css = false, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
-        -- Available modes: foreground, background
-        -- Available modes for `mode`: foreground, background,  virtualtext
-        mode = 'background', -- Set the display mode.
-        virtualtext = '■',
+      {
+        '<leader>bc',
+        function()
+          require('mini.hipatterns').toggle(vim.api.nvim_get_current_buf())
+        end,
+        desc = 'toggle colorizer',
       },
     },
-    enabled = true,
+    config = function()
+      local hipatterns = require('mini.hipatterns')
+      hipatterns.setup({
+        highlighters = {
+          keymap_cmd = {
+            pattern = '<CMD>',
+            group = 'Special',
+          },
+          keymap_cr = {
+            pattern = '<CR>',
+            group = 'Special',
+          },
+          keymap_plug = {
+            pattern = '<Plug>',
+            group = 'Special',
+          },
+          --
+          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+          fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+          hack = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+          todo = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+          note = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
+
+          -- Highlight hex color strings (`#rrggbb`) using that color
+          hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
+        },
+      })
+    end,
   },
 
   { -- https://github.com/lukas-reineke/indent-blankline.nvim

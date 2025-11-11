@@ -35,8 +35,6 @@
   Treesitter configurations and abstraction layer for neovim.
 - [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) -
   Create your own textobjects using tree-sitter queries!.
-- [folke/todo-comments.nvim](https://github.com/folke/todo-comments.nvim) -
-  Highlight and search for todo comments like TODO, etc.
 
 ### 🔎 Finders & Explorers
 
@@ -67,8 +65,8 @@
   Nerd fonts moved some symbols with version 3.0
 - [tzachar/local-highlight.nvim](https://github.com/tzachar/local-highlight.nvim) -
   Using regexes and extmarks to highlight uses of word under the cursor.
-- [nvim-colorizer.lua](https://github.com/NvChad/nvim-colorizer.lua) -
-  High-performance color highlighter which has no external dependencies!.
+- [nvim-mini/mini.hipatterns](https://github.com/nvim-mini/mini.hipatterns) -
+  Highlight patterns in text.
 - [echasnovski/mini.clue](https://github.com/echasnovski/mini.clue) - Show next
   key clues
 - [mateconpizza/winbar.nvim](https://github.com/mateconpizza/winbar.nvim) - Configurable and

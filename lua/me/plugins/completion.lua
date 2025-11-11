@@ -2,6 +2,9 @@ return {
   { -- https://github.com/Saghen/blink.cmp
     'saghen/blink.cmp',
     enabled = true,
+    dependencies = {
+      'rafamadriz/friendly-snippets',
+    },
     event = 'VeryLazy',
     lazy = false,
     version = 'v0.*',
