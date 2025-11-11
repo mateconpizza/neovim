@@ -219,4 +219,50 @@ return {
       })
     end,
   },
+
+  { -- https://github.com/mateconpizza/winbar.nvim
+    dir = '~/dev/git/lualang/winbar.nvim',
+    enabled = true,
+    opts = {
+      enabled = true,
+      file_icon = true,
+      show_single_buffer = true,
+      git_branch = true,
+      lsp_status = true,
+      lsp = {
+        enabled = true,
+        separator = ',',
+        format = function(clientes)
+          return '<' .. clientes .. '>'
+        end,
+      },
+      diagnostics = {
+        enabled = true,
+        style = 'mini', -- or 'standard'
+        bug_icon = '󰃤',
+        show_detail = true,
+        icons = {
+          error = icons.lsp.diagnostics.filled.Error,
+          hint = icons.lsp.diagnostics.filled.Hint,
+          info = icons.lsp.diagnostics.filled.Info,
+          warn = icons.lsp.diagnostics.filled.Warn,
+        },
+      },
+      layout = {
+        left = { 'git_branch' },
+        right = {
+          'lsp_status',
+          'diagnostics',
+          'modified',
+          'readonly',
+          'file_icon',
+          'filename',
+        },
+      },
+      styles = {
+        winbar = { bold = false, italic = true },
+        winbarnc = { link = 'Comment' },
+      },
+    },
+  },
 }

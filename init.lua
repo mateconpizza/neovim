@@ -3,19 +3,6 @@ _G.Core = require('me.core')
 Core.config = require('me.config')
 Core.config.options.setup()
 Core.config.lazy.setup()
-Core.ui.winbar.setup({
-  enabled = true,
-  file_icon = true,
-  show_single_buffer = true,
-  git_branch = true,
-  lsp_status = false,
-  diagnostics = {
-    enabled = true,
-    mini = true,
-    bug_icon = '',
-    show_detail = true,
-  },
-})
 
 -- testing...
 -- Core.lspp.load_registered()

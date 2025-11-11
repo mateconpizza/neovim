@@ -71,6 +71,8 @@
   High-performance color highlighter which has no external dependencies!.
 - [echasnovski/mini.clue](https://github.com/echasnovski/mini.clue) - Show next
   key clues
+- [mateconpizza/winbar.nvim](https://github.com/mateconpizza/winbar.nvim) - Configurable and
+  minimal Neovim WinBar plugin with LSP, Git, and diagnostics integration.
 
 ### 🚧 Misc
 
