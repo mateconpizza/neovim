@@ -13,10 +13,11 @@ return {
 
   { -- https://github.com/toppair/peek.nvim
     -- dependencies: webkit2gtk (webview)
-    'toppair/peek.nvim',
+    -- BUG: https://github.com/toppair/peek.nvim/issues/79
+    dir = '~/dev/git/lualang/peek.nvim',
     build = 'deno task --quiet build:fast',
     opts = {
-      theme = 'light',
+      theme = vim.o.background,
       app = 'webview', -- webview
     },
     -- stylua: ignore
