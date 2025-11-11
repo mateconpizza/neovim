@@ -1,3 +1,15 @@
+-- autocmp for `gomarks` buffers
+
+local app = {
+  bin = 'gm',
+  default_repo = 'bookmarks',
+  cmd = 'tags --json',
+}
+
+local cmd_fmt = function(database_name)
+  return app.bin .. ' -n ' .. database_name .. ' ' .. app.cmd
+end
+
 local gomarks_database = ''
 
 local function extract_database_name(bufnr)
@@ -26,8 +38,8 @@ end
 
 ---@return table<string, integer> tag_counter
 local function get_tag_counter(database_name)
-  database_name = database_name or 'bookmarks'
-  local cmd = 'gm ' .. '-n ' .. database_name .. ' rec tags --json'
+  database_name = database_name or app.default_repo
+  local cmd = cmd_fmt(database_name)
   local handle = io.popen(cmd)
   if not handle then
     vim.notify('Failed to run gm', vim.log.levels.ERROR)
@@ -39,8 +51,8 @@ local function get_tag_counter(database_name)
 
   local ok, decoded = pcall(vim.fn.json_decode, output)
   if not ok or type(decoded) ~= 'table' then
-    vim.notify('Failed to decode gm JSON output', vim.log.levels.ERROR)
-    return {}
+    vim.notify('gomarks-cmp: failed to decode gm JSON output', vim.log.levels.INFO)
+    return { error = 1 }
   end
 
   return decoded
