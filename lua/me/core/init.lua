@@ -11,7 +11,7 @@
 ---@field toggle me.core.toggle
 ---@field treesitter me.core.treesitter
 ---@field utils me.core.utils
----@field ui me.core.ui
+---@field manager me.core.manager
 ---@field defaults me.core.defaults
 ---@field commands me.core.commands
 local M = {}

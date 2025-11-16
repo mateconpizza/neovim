@@ -34,7 +34,7 @@ function M.execute(opts)
 end
 
 M.code_action = function()
-  if not Core.utils.has_plugin('fzf-lua') then
+  if not Core.manager.has_plugin('fzf-lua') then
     Core.warnme('fzf-lua not installed. https://github.com/ibhagwan/fzf-lua')
     return
   end
