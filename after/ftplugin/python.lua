@@ -1,16 +1,16 @@
-local hl = vim.api.nvim_set_hl
-
 vim.opt_local.expandtab = true
 vim.opt_local.shiftwidth = 4
 vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 
 if vim.g.colors_name == 'gruvbox-material' then
-  hl(0, '@constant.python', { link = 'Purple', default = true })
-  hl(0, '@keyword.return.python', { link = 'RedItalic', default = true })
-  hl(0, '@keyword.conditional.python', { link = 'RedItalic', default = true })
-  hl(0, '@keyword.exception.python', { link = 'RedItalic', default = true })
-  hl(0, '@keyword.python', { link = 'RedItalic', default = true })
+  local c = Core.colors.get_colors()
+  Core.hi['@lsp.typemod.variable.readonly.python'] = { link = '@constant.python' }
+  Core.hi.RedItalic = { fg = c.normal.red, italic = true, default = true }
+  Core.hi['@keyword.return.python'] = { link = 'RedItalic' }
+  Core.hi['@keyword.conditional.python'] = { link = 'RedItalic' }
+  Core.hi['@keyword.exception.python'] = { link = 'RedItalic' }
+  Core.hi['@keyword.python'] = { link = 'RedItalic' }
 end
 
 -- set debugger

@@ -81,17 +81,16 @@ return {
       vim.g.gruvbox_material_better_performance = true
       vim.cmd('colorscheme gruvbox-material')
 
-      local set_hl = vim.api.nvim_set_hl
-      local light = Core.colors.gruvbox_light_medium()
-      local dark = Core.colors.gruvbox_dark_medium()
-      if vim.o.background == 'light' then
-        set_hl(0, 'LineNr', { fg = light.lightgrey })
-        set_hl(0, 'Folded', { fg = dark.lightgrey, bg = '#e5d5ad', italic = true })
-        set_hl(0, 'MatchParen', { bg = dark.white, fg = light.orange, bold = true })
-      else
-        set_hl(0, 'Folded', { bg = light.foreground, fg = dark.blue, italic = true })
-        set_hl(0, 'MatchParen', { bg = light.foreground, fg = dark.orange, bold = true })
-      end
+      local c = Core.colors.get_colors()
+      Core.hi.CurrentWord = { bg = c.base.dark0_soft, bold = true, italic = true }
+      Core.hi.Folded = { bg = c.base.dark0_soft, fg = c.bright.blue, italic = true }
+      Core.hi.LineNr = { fg = c.base.dark3 }
+      Core.hi.MatchParen = { bg = c.base.dark2, fg = c.extras.orange, bold = true }
+      Core.hi.TSDanger = { fg = c.normal.red, bold = true }
+      Core.hi.TSNote = { fg = c.normal.green, bold = true }
+      Core.hi.TSWarning = { fg = c.normal.yellow, bold = true }
+      Core.hi.Todo = { fg = c.normal.blue, bold = true }
+      Core.hi['@constant'] = { fg = c.normal.magenta }
     end,
   },
 
