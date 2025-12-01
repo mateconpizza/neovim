@@ -21,7 +21,7 @@ local function load_env_file()
     end
   end
 
-  Core.warnme("Loaded envs variables from '" .. env_file .. "'")
+  Core.log.warning('DAP: ', "Loaded envs variables from '" .. env_file .. "'")
   vim.print(env)
 
   return env
@@ -30,7 +30,7 @@ end
 local dap = function()
   local ok, dap = pcall(require, 'dap')
   if not ok then
-    Core.warnme('golang-dap: nvim-dap not found')
+    Core.log.warning('DAP: ', 'nvim-dap not found for golang')
     return
   end
 

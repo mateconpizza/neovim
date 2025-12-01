@@ -7,9 +7,7 @@ local M = {}
 ---@return boolean
 function M.contains(array, target)
   for _, value in ipairs(array) do
-    if value == target then
-      return true
-    end
+    if value == target then return true end
   end
   return false
 end
@@ -19,29 +17,15 @@ end
 ---@return boolean
 function M.boolme(value)
   local falseish = { 'false', 'no', 'n', '1', 1, false, nil, 'nil' }
-  if M.contains(falseish, value) then
-    return false
-  end
+  if M.contains(falseish, value) then return false end
 
   return true
 end
 
--- get plugin from lazy
----@param name string
-function M.get_plugin(name)
-  return require('lazy.core.config').spec.plugins[name]
-end
-
--- checks if a plugin is installed
----@param plugin string
----@return boolean
-function M.has_plugin(plugin)
-  return M.get_plugin(plugin) ~= nil
-end
-
+-- remove duplicate values from a list while preserving order
 ---@generic T
----@param list T[]
----@return T[]
+---@param list T[] input list potentially containing duplicates
+---@return T[] list with duplicates removed
 function M.deduplicate(list)
   local ret = {}
   local seen = {}
@@ -59,14 +43,10 @@ end
 ---@return string|nil
 M.which = function(cmd)
   local result = io.popen('which ' .. cmd, 'r')
-  if not result then
-    return nil
-  end
+  if not result then return nil end
 
   local path = result:read('*a')
-  if path == '' then
-    return nil
-  end
+  if path == '' then return nil end
 
   result:close()
   return path
@@ -77,9 +57,7 @@ end
 ---@param f string
 M.file_exist = function(f)
   local file = io.open(f, 'r')
-  if not file then
-    return false
-  end
+  if not file then return false end
 
   return true
 end
@@ -90,14 +68,12 @@ end
 M.write_json = function(fname, t)
   local data = vim.fn.json_encode(t)
   if not data then
-    Core.warnme('write: failed to encode data to JSON')
+    Core.log.warning('write JSON: ', 'failed to encode data to JSON')
     return false
   end
 
   local success, err = pcall(vim.fn.writefile, { data }, fname)
-  if not success then
-    Core.warnme('write_json: ' .. err)
-  end
+  if not success then Core.log.error('write JSON: ', err) end
 
   return success
 end
@@ -113,9 +89,7 @@ end
 function M.gc_logfile(path, size_kb)
   size_kb = size_kb or 500
   local logfile = io.open(path, 'r')
-  if not logfile then
-    return
-  end
+  if not logfile then return end
 
   local size_bytes = logfile:seek('end')
   logfile:close()
@@ -123,7 +97,10 @@ function M.gc_logfile(path, size_kb)
   local kilobytes = size_bytes / 1024
 
   if kilobytes > size_kb then
-    Core.warnme(string.format('Log file size: %.2f KB exceeds limit of %d KB\nRemoving %s', kilobytes, size_kb, path))
+    Core.log.warning(
+      'Log file size: ',
+      string.format('%.2f KB exceeds limit of %d KB\nRemoving %s', kilobytes, size_kb, path)
+    )
     os.remove(path)
   end
 end
@@ -155,9 +132,7 @@ M.create_floating_window = function(opts)
     border = 'rounded',
   })
 
-  if opts.lines then
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, opts.lines)
-  end
+  if opts.lines then vim.api.nvim_buf_set_lines(buf, 0, -1, false, opts.lines) end
 
   if opts.focus ~= false then
     vim.api.nvim_set_current_win(win)

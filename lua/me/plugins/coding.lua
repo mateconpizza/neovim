@@ -22,7 +22,7 @@ return {
         function()
           neocodeium_enabled = not neocodeium_enabled
           vim.cmd('NeoCodeium toggle')
-          Core.warnme(neocodeium_enabled and 'neocodeium enabled' or 'neocodeium disabled')
+          Core.log.info('coding: ', neocodeium_enabled and 'neocodeium enabled' or 'neocodeium disabled')
         end,
         desc = 'neocodeium toggle',
       },

@@ -37,7 +37,7 @@ end
 M.setup = function()
   local ok, ts = pcall(require, 'nvim-treesitter')
   if not ok then
-    Core.warnme('treesitter: nvim-treesitter not found')
+    Core.log.warning('treesitter: ', 'nvim-treesitter not found')
     return
   end
 

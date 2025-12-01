@@ -16,6 +16,8 @@
 ---@field manager me.core.manager
 ---@field defaults me.core.defaults
 ---@field commands me.core.commands
+---@field test me.core.test
+---@field log me.core.log
 local M = {}
 
 setmetatable(M, {
@@ -57,9 +59,7 @@ function M.confirm(mesg, choices)
   local choice = vim.fn.input({ prompt = mesg })
   choice = choice:lower()
 
-  if not valid_choices[choice] then
-    return false
-  end
+  if not valid_choices[choice] then return false end
 
   return true
 end
@@ -73,6 +73,8 @@ function M.input(mesg)
   return choice
 end
 
+local root_cache = setmetatable({}, { __mode = 'kv' })
+
 M.root_patterns = { '.git', '/lua' }
 -- returns the root directory based on:
 -- * lsp workspace folders
@@ -81,6 +83,9 @@ M.root_patterns = { '.git', '/lua' }
 -- * root pattern of cwd
 ---@return string
 function M.get_root()
+  local bufnr = vim.api.nvim_get_current_buf()
+  if root_cache[bufnr] then return root_cache[bufnr] end
+
   ---@type string?
   local path = vim.api.nvim_buf_get_name(0)
   path = path ~= '' and vim.loop.fs_realpath(path) or nil
@@ -94,9 +99,7 @@ function M.get_root()
       end, workspace) or client.config.root_dir and { client.config.root_dir } or {}
       for _, p in ipairs(paths) do
         local r = vim.loop.fs_realpath(p)
-        if path:find(r, 1, true) then
-          roots[#roots + 1] = r
-        end
+        if path:find(r, 1, true) then roots[#roots + 1] = r end
       end
     end
   end
@@ -163,22 +166,9 @@ M.keymap_buf = function(bufnr, keys, func, desc, mode)
   vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = desc })
 end
 
--- warn user
----@param s string
-M.warnme = function(s)
-  vim.api.nvim_echo({ { s, 'WarningMsg' } }, true, {})
-end
-
--- error user
----@param s string
-function M.errorme(s)
-  vim.api.nvim_echo({ { s, 'ErrorMsg' } }, true, {})
-end
-
 -- notify user
----@param s string
-M.notify = function(s)
-  vim.notify(s)
+function M.notify(...)
+  vim.api.nvim_echo({ ... }, true, {})
 end
 
 -- set root

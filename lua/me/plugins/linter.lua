@@ -2,9 +2,7 @@
 
 local autocmd = vim.api.nvim_create_autocmd
 local shell_path = Core.env.xdg_home() .. '/dot/shellcheck/shellcheckrc'
-if not Core.utils.file_exist(shell_path) then
-  Core.warnme('linting: shellcheckrc not found\n')
-end
+if not Core.utils.file_exist(shell_path) then Core.log.warning('linting: ', 'shellcheckrc not found\n') end
 
 local configs = {
   shellcheckrc = { -- https://www.shellcheck.net/wiki/
@@ -59,9 +57,7 @@ return {
           -- Only run the linter in buffers that you can modify in order to
           -- avoid superfluous noise, notably within the handy LSP pop-ups that
           -- describe the hovered symbol using Markdown.
-          if vim.opt_local.modifiable:get() then
-            lint.try_lint()
-          end
+          if vim.opt_local.modifiable:get() then lint.try_lint() end
         end,
         desc = 'lint code via nvim-lint',
       })

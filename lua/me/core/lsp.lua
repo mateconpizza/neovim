@@ -1,5 +1,11 @@
 ---@class me.core.lsp
-local M = {}
+local M = {
+  _started = false,
+
+  -- registered LSP names
+  servers = {},
+}
+
 M.diagnostic = require('me.core.diagnostic')
 
 M.action = setmetatable({}, {
@@ -15,9 +21,6 @@ M.action = setmetatable({}, {
     end
   end,
 })
-
--- registered LSP names
-M.servers = {}
 
 ---@class LspCommand: lsp.ExecuteCommandParams
 ---@field open? boolean
@@ -37,7 +40,7 @@ end
 -- show available code actions
 M.code_action = function()
   if not Core.manager.has_plugin('fzf-lua') then
-    Core.warnme('fzf-lua not installed. https://github.com/ibhagwan/fzf-lua')
+    Core.log.warning('LSP code action: ', 'fzf-lua not installed. https://github.com/ibhagwan/fzf-lua')
     return
   end
 
@@ -94,6 +97,7 @@ function M.keymaps(bufnr)
   map(bufnr, 'gO',  '<CMD>FzfLua lsp_document_symbols<CR>', 'document symbols')
   map(bufnr, 'K',   vim.lsp.buf.hover, 'hover documentation')
   map(bufnr, '<C-s>', vim.lsp.buf.signature_help, 'signature documentation', 'i')
+
   -- lsp
   map(bufnr, '<leader>l',   '', '+lsp', { 'n', 'v' })
   map(bufnr, '<leader>lc',  vim.lsp.codelens.run, 'run codelens', { 'n', 'v' })
@@ -104,6 +108,7 @@ function M.keymaps(bufnr)
   map(bufnr, '<leader>lwl', function()
     vim.print(vim.lsp.buf.list_workspace_folders())
   end, 'workspace list folders')
+
   -- diagnostics
   map(bufnr, '<leader>ld', '', '+diagnostic', { 'n', 'v' })
   map(bufnr, '<leader>ldc', M.diagnostic.copy, 'copy diagnostic error')
@@ -138,10 +143,12 @@ end
 -- enables all registered lsps.
 ---@return nil
 function M.start()
+  if M._started then return Core.log.warning('LSP: ', 'already started') end
   for _, name in pairs(M.servers) do
     vim.lsp.config(name, { capabilities = Core.lsp.capabilities() })
     vim.lsp.enable(name)
   end
+  M._started = true
 end
 
 -- create user command to manually start all LSP servers

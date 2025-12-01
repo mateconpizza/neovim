@@ -6,6 +6,8 @@ local M = {}
 local augroup = Core.augroup
 local autocmd = vim.api.nvim_create_autocmd
 
+local uv = vim.uv or vim.loop
+
 --- Setup highlight on yank autocmd
 function M.setup_highlight_yank()
   autocmd('TextYankPost', {
@@ -36,15 +38,11 @@ function M.setup_restore_cursor()
     group = augroup('last_location'),
     callback = function()
       local ft = vim.bo.filetype
-      if vim.tbl_contains(Core.defaults.exclude_filetypes, ft) then
-        return
-      end
+      if vim.tbl_contains(Core.defaults.exclude_filetypes, ft) then return end
 
       local mark = vim.api.nvim_buf_get_mark(0, '"')
       local lcount = vim.api.nvim_buf_line_count(0)
-      if mark[1] > 0 and mark[1] <= lcount then
-        pcall(vim.api.nvim_win_set_cursor, 0, mark)
-      end
+      if mark[1] > 0 and mark[1] <= lcount then pcall(vim.api.nvim_win_set_cursor, 0, mark) end
     end,
     desc = 'go to last loc when opening a buffer',
   })
@@ -99,8 +97,15 @@ end
 function M.setup_auto_root()
   autocmd({ 'BufEnter' }, {
     group = augroup('auto_root'),
-    callback = function()
-      vim.fn.chdir(Core.get_root())
+    callback = function(args)
+      local bufnr = args.buf
+
+      if vim.bo[bufnr].buftype ~= '' then return end
+      if vim.fn.filereadable(vim.api.nvim_buf_get_name(bufnr)) == 0 then return end
+
+      local root = Core.get_root()
+      ---@diagnostic disable-next-line: undefined-field
+      if root and root ~= uv.cwd() then vim.fn.chdir(root) end
     end,
     desc = 'automatically change to project root',
   })
@@ -137,7 +142,7 @@ function M.setup_fugitive_disable_x()
     pattern = '*fugitive*',
     callback = function(args)
       if not vim.b[args.buf].fugitive_x_disabled then
-        Core.warnme('fugitive_X disabled')
+        Core.log.warning('autocmd: ', 'fugitive_X disabled')
         vim.keymap.set('n', 'X', '<Nop>', { buffer = args.buf, silent = true })
         vim.b[args.buf].fugitive_x_disabled = true
       end
@@ -151,9 +156,7 @@ function M.setup_bigfile()
     group = augroup('bigfile'),
     callback = function(event)
       local bigfile = Core.defaults.bigfile
-      if not bigfile.enabled then
-        return
-      end
+      if not bigfile.enabled then return end
 
       local bufnr = event.buf
       local size = vim.fn.getfsize(event.match)
@@ -170,7 +173,7 @@ function M.setup_bigfile()
         vim.opt_local.winbar = ''
 
         -- buffer treesitter
-        Core.warnme('treesitter disabled on file: ' .. event.file)
+        Core.log.warning('autocmd: ', 'treesitter disabled on file: ' .. event.file)
         vim.treesitter.stop(bufnr)
       end
     end,
