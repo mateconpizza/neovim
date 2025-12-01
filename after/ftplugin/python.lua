@@ -3,8 +3,10 @@ vim.opt_local.shiftwidth = 4
 vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 
+-- colorscheme tweaks
 if vim.g.colors_name == 'gruvbox-material' then
-  local c = Core.colors.get_colors()
+  local colors = Core.colors
+  local c = colors.is_darkmode() and colors.gruvbox_dark_medium() or colors.gruvbox_light_medium()
   Core.hi['@lsp.typemod.variable.readonly.python'] = { link = '@constant.python' }
   Core.hi.RedItalic = { fg = c.normal.red, italic = true, default = true }
   Core.hi['@keyword.return.python'] = { link = 'RedItalic' }

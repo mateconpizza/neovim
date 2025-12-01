@@ -1,6 +1,6 @@
 return {
 
-  { -- https://github.com/catppuccin/nvim
+  { -- https://github.com/catppuccin/nvim {{{
     'catppuccin/nvim',
     name = 'catppuccin',
     priority = 1000,
@@ -8,7 +8,7 @@ return {
     enabled = Core.env.get('NVIM_THEME', '') == 'catppuccin',
     opts = function()
       return {
-        flavour = 'mocha',
+        flavour = 'latte',
         transparent_background = false,
         show_end_of_buffer = true,
         styles = {
@@ -52,15 +52,14 @@ return {
       require('catppuccin').setup(opts)
       vim.cmd.colorscheme('catppuccin')
     end,
-  },
-
-  { -- https://github.com/sainnhe/gruvbox-material
+  }, -- }}}
+  { -- https://github.com/sainnhe/gruvbox-material {{{
     'sainnhe/gruvbox-material',
     lazy = false,
     priority = 1000,
     enabled = Core.env.get('NVIM_THEME', '') == 'gruvbox',
     config = function()
-      vim.g.gruvbox_material_enable_bold = true
+      vim.g.gruvbox_material_enable_bold = false
       vim.g.gruvbox_material_enable_italic = true
       vim.g.gruvbox_material_transparent_background = true
       vim.g.gruvbox_material_dim_inactive_windows = false
@@ -74,14 +73,15 @@ return {
       vim.g.gruvbox_material_current_word = 'underline'
       -- vim.g.gruvbox_material_menu_selection_background = 'red'
       vim.g.gruvbox_material_float_style = 'storm' -- 'storm', 'dim'
-      vim.g.gruvbox_material_foreground = 'material' -- 'material' 'original' 'mix'
+      vim.g.gruvbox_material_foreground = 'original' -- 'material' 'original' 'mix'
       vim.g.gruvbox_material_diagnostic_line_highlight = true
       vim.g.gruvbox_material_visual = 'grey background' -- 'reverse'
       vim.g.gruvbox_material_inlay_hints_background = 'none' -- 'dimmed'
       vim.g.gruvbox_material_better_performance = true
-      vim.cmd('colorscheme gruvbox-material')
+      vim.cmd.colorscheme('gruvbox-material')
 
-      local c = Core.colors.get_colors()
+      local colors = Core.colors
+      local c = colors.is_darkmode() and colors.gruvbox_dark_medium() or colors.gruvbox_light_medium()
       Core.hi.CurrentWord = { bg = c.base.dark0_soft, bold = true, italic = true }
       Core.hi.Folded = { bg = c.base.dark0_soft, fg = c.bright.blue, italic = true }
       Core.hi.LineNr = { fg = c.base.dark3 }
@@ -91,17 +91,18 @@ return {
       Core.hi.TSWarning = { fg = c.normal.yellow, bold = true }
       Core.hi.Todo = { fg = c.normal.blue, bold = true }
       Core.hi['@constant'] = { fg = c.normal.magenta }
+      Core.hi.BlinkCmpMenuSelection = { fg = c.base.dark1, bg = colors.darken(c.extras.aqua, 0.35, c.fg) }
+      Core.hi.PmenuSel = { fg = c.base.dark1, bg = colors.darken(c.extras.aqua, 0.35, c.fg) }
     end,
-  },
-
-  { -- https://github.com/folke/tokyonight.nvim
+  }, -- }}}
+  { -- https://github.com/folke/tokyonight.nvim {{{
     'folke/tokyonight.nvim',
     lazy = false,
     priority = 1000,
     enabled = Core.env.get('NVIM_THEME', '') == 'tokyonight',
     opts = function()
       return {
-        style = 'day',
+        style = 'storm',
         sidebars = {
           'qf',
           'vista_kind',
@@ -130,33 +131,5 @@ return {
       tokyonight.setup(opts)
       tokyonight.load()
     end,
-  },
-
-  { -- https://github.com/mateconpizza/retrobox.nvim
-    'mateconpizza/retrobox.nvim',
-    enabled = true,
-    opts = {
-      styles = {
-        Function = { bold = false },
-        Keyword = { italic = true },
-        VertSplit = { bg = 'NONE', bold = true },
-      },
-      integrations = {
-        lsp = true,
-        neotest = true,
-        treesitter = true,
-        treesitter_context = false,
-        fzf = false,
-        gitsigns = false,
-        dap = false,
-        dap_ui = false,
-        fidget = false,
-        blink_cmp = true,
-        leap = false,
-        mini_clue = false,
-        mini_indentscope = false,
-        aerial = true,
-      },
-    },
-  },
+  }, -- }}}
 }

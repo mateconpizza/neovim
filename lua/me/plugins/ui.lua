@@ -1,4 +1,5 @@
-local icon_indent = Core.icons.all().bar.b
+local icons = Core.icons
+local icon_indent = icons.all().bar.b
 local colors = Core.colors.current()
 
 return {
@@ -10,13 +11,18 @@ return {
       override_by_extension = {
         ['gomarks'] = {
           icon = Core.icons.lsp.kinds.Field,
-          color = colors.green,
+          color = colors.normal.green,
           name = 'Bookmark',
         },
         ['gohtml'] = {
           icon = '',
-          color = colors.red,
+          color = colors.normal.red,
           name = 'GoHTML',
+        },
+        ['snip'] = {
+          icon = '',
+          color = colors.bright.magenta,
+          name = 'Snippet',
         },
       },
     },
@@ -28,22 +34,14 @@ return {
     keys = {
       { '<leader>bw', '<CMD>LocalHighlightToggle<CR>', desc = 'toggle highlight word' },
     },
-    config = function()
-      local folded_hl = vim.api.nvim_get_hl(0, { name = 'Folded', link = false })
-      vim.api.nvim_set_hl(0, 'MyLocalHighlight', {
-        italic = true,
-        bold = true,
-        bg = folded_hl.bg,
-      })
-      require('local-highlight').setup({
-        hlgroup = 'MyLocalHighlight',
-        cw_hlgroup = nil,
-        insert_mode = false,
-        min_match_len = 1,
-        max_match_len = math.huge,
-        animate = { enabled = false },
-      })
-    end,
+    opts = {
+      hlgroup = 'CurrentWord',
+      cw_hlgroup = nil,
+      insert_mode = false,
+      min_match_len = 1,
+      max_match_len = math.huge,
+      animate = { enabled = false },
+    },
     enabled = true,
   },
 
@@ -75,7 +73,7 @@ return {
             pattern = '<Plug>',
             group = 'Special',
           },
-          --
+
           -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
           fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
           hack = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
@@ -86,19 +84,22 @@ return {
           hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
         },
       })
+
+      Core.hi.MiniHipatternsFixme = { link = 'TSDanger' }
+      Core.hi.MiniHipatternsHack = { link = 'TSWarning' }
+      Core.hi.MiniHipatternsTodo = { link = 'Todo' }
+      Core.hi.MiniHipatternsNote = { link = 'TSNote' }
     end,
   },
 
   { -- https://github.com/lukas-reineke/indent-blankline.nvim
     'lukas-reineke/indent-blankline.nvim',
     event = 'VeryLazy',
-    enabled = true,
+    enabled = false,
     opts = {
       indent = {
         char = icon_indent,
         tab_char = icon_indent,
-        -- char = '│',
-        -- tab_char = '│',
       },
       scope = { enabled = false },
       exclude = {
@@ -111,7 +112,7 @@ return {
   { -- https://github.com/echasnovski/mini.indentscope
     'echasnovski/mini.indentscope',
     version = false, -- wait till new 0.7.0 release to put it back on semver
-    enabled = true,
+    enabled = false,
     event = 'VeryLazy',
     opts = {
       symbol = icon_indent,
@@ -191,47 +192,45 @@ return {
   },
 
   { -- https://github.com/mateconpizza/winbar.nvim
-    dir = '~/dev/git/lualang/winbar.nvim',
+    'mateconpizza/winbar.nvim',
+    event = { 'BufRead', 'BufNewFile' },
     enabled = true,
+    ---@module 'winbar'
+    ---@type winbar.config
     opts = {
       enabled = true,
-      file_icon = true,
-      show_single_buffer = true,
-      git_branch = true,
-      lsp_status = true,
-      lsp = {
+      dev_mode = true,
+      filename = {
         enabled = true,
-        separator = ',',
-        format = function(clientes)
-          return '<' .. clientes .. '>'
+        icon = true,
+      },
+      modes = {
+        enabled = true,
+        format = function(_)
+          return ' ■' -- █ ▉ ▊ ▋▌▍
         end,
       },
-      diagnostics = {
-        enabled = true,
-        style = 'mini', -- or 'standard'
-        bug_icon = '󰃤',
-        show_detail = true,
-        icons = {
-          error = icons.lsp.diagnostics.filled.Error,
-          hint = icons.lsp.diagnostics.filled.Hint,
-          info = icons.lsp.diagnostics.filled.Info,
-          warn = icons.lsp.diagnostics.filled.Warn,
-        },
-      },
+      show_single_buffer = true,
+      icons = { modified = '●', readonly = '' },
+      lsp = { enabled = true, separator = '' },
+      git = { branch = { icon = '' }, diff = { enabled = true } },
+      diagnostics = { style = 'standard' }, -- or 'mini'
+      pomodoro = { enabled = true },
       layout = {
-        left = { 'git_branch' },
+        left = { 'modes', 'coso', 'git_branch', 'git_diff' },
+        center = {},
         right = {
           'lsp_status',
-          'diagnostics',
+          'lsp_diagnostics',
           'modified',
           'readonly',
-          'file_icon',
+          'fileicon',
           'filename',
         },
       },
-      styles = {
-        winbar = { bold = false, italic = true },
-        winbarnc = { link = 'Comment' },
+      highlights = {
+        WinBarModeNormal = { link = 'NonText' },
+        WinBarModeVisual = { link = 'Special' },
       },
     },
   },
