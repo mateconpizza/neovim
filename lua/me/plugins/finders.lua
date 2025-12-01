@@ -9,11 +9,17 @@ return {
     enabled = true,
     cmd = { 'FzfLua' },
     config = function()
-      require('fzf-lua').setup({
+      ---@module "fzf-lua"
+      ---@type fzf-lua.Config|{}
+      ---@diagnostics disable: missing-fields
+      local opts = {
         Core.env.get('TMUX_FZF_PROFILE', default_fzf_profile),
         defaults = {
           file_icons = true,
           git_icons = true,
+        },
+        files = {
+          previewer = false,
         },
         oldfiles = {
           include_current_session = true,
@@ -73,8 +79,10 @@ return {
             ['ctrl-q'] = 'select-all+accept',
           },
         },
-      })
+      }
+      ---@diagnostics enable: missing-fields
 
+      require('fzf-lua').setup(opts)
       require('fzf-lua').register_ui_select()
     end,
     -- stylua: ignore start
@@ -84,7 +92,7 @@ return {
       -- { '<C-p>', function() Core.find_files() end, desc = 'search files' },
       { '<C-p>', '<CMD>FzfLua files<CR>', desc = 'search files' },
       ---@diagnostic disable-next-line: undefined-field
-      { '<leader>sf', function() require('fzf-lua').files({ cwd = vim.uv.cwd() }) end, desc = 'search all files' },
+      { '<leader>sf', function() require('fzf-lua').files({ cwd = vim.fn.expand("%:h") }) end, desc = 'search all files' },
       { '<leader>?', '<CMD>FzfLua oldfiles<CR>', desc = '[?] find recently opened files' },
       { '<leader>:', '<CMD>FzfLua command_history<CR>', desc = 'search command history' },
       { '<leader>/', '<CMD>FzfLua grep_curbuf<CR>', desc = 'fuzzily search in current buf' },
@@ -136,20 +144,15 @@ return {
   },
 
   { -- https://github.com/mateconpizza/projects.nvim
-    dir = '~/dev/git/lualang/projects.nvim',
+    'mateconpizza/projects.nvim',
+    cmd = 'FzfLuaProjects',
     dependencies = {
       'ibhagwan/fzf-lua',
       'nvim-tree/nvim-web-devicons',
     },
-    opts = {
-      previewer = {
-        enabled = true,
-      },
-      color = false,
-      icons = {
-        enabled = false,
-      },
-    },
+    ---@module 'projects'
+    ---@type projects.opts
+    opts = {},
     keys = {
       { '<leader>sp', '<CMD>FzfLuaProjects<CR>', desc = 'search projects' },
     },
@@ -158,28 +161,24 @@ return {
 
   { -- https://github.com/stevearc/oil.nvim
     'stevearc/oil.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     ---@module 'oil'
     ---@type oil.SetupOpts
-    opts = {
-      delete_to_trash = true,
-    },
+    opts = { delete_to_trash = true },
     cmd = { 'Oil' },
     keys = {
       { '-', '<CMD>Oil<CR>', desc = 'open parent directory' },
     },
-    lazy = false,
     enabled = true,
   },
 
   { -- https://github.com/ggandor/leap.nvim
     'ggandor/leap.nvim',
-    config = function()
-      local mode = { 'n', 'x', 'o' }
-      local nmap = Core.keymap
-      nmap('s', '<Plug>(leap)', 'leap forward to', mode)
-      nmap('S', '<Plug>(leap-backward)', 'leap backward to', mode)
-      nmap('gs', '<Plug>(leap-from-window)', 'leap from windows', mode)
-    end,
+    keys = {
+      { 's', '<Plug>(leap)', desc = 'leap forward to', mode = { 'n', 'x', 'o' } },
+      { 'S', '<Plug>(leap-backward)', desc = 'leap backward to', mode = { 'n', 'x', 'o' } },
+      { 'gs', '<Plug>(leap-from-window)', desc = 'leap from windows', mode = { 'n', 'x', 'o' } },
+    },
     enabled = true,
   },
 }

@@ -25,19 +25,6 @@ function M.grep()
   })
 end
 
-function M.lsp_info()
-  user_command('LspInfo', function()
-    vim.cmd('checkhealth vim.lsp')
-  end, {})
-end
-
-function M.lsp_log()
-  user_command('LspLog', function()
-    local logpath = Core.env.xdg_state_home() .. '/nvim/' .. 'lsp.log'
-    vim.cmd('e ' .. logpath)
-  end, {})
-end
-
 function M.setup()
   M.grep()
 end

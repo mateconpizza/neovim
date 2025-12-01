@@ -35,9 +35,7 @@ return {
         local adapters = {}
         for name, config in pairs(opts.adapters or {}) do
           if type(name) == 'number' then
-            if type(config) == 'string' then
-              config = require(config)
-            end
+            if type(config) == 'string' then config = require(config) end
             adapters[#adapters + 1] = config
           elseif config ~= false then
             local adapter = require(name)
@@ -62,8 +60,8 @@ return {
 
       require('neotest').setup(opts)
     end,
+    -- stylua: ignore
     keys = {
-      -- stylua: ignore start
       { '<leader>t', '', desc = '+testing', mode = { 'n', 'v' } },
       { '<leader>tt', function() require('neotest').run.run(vim.fn.expand('%')) end, desc = 'test run file' },
       { '<leader>tT', function() require('neotest').run.run(vim.uv.cwd()) end, desc = 'test run all files' },
@@ -73,7 +71,6 @@ return {
       { '<leader>tO', function() require('neotest').output_panel.toggle() end, desc = 'test toggle output panel' },
       { '<leader>tS', function() require('neotest').run.stop() end, desc = 'test stop' },
       { '<leader>tl', function() require('neotest').run.run_last() end, desc = 'test run last' },
-      -- stylua: ignore end
     },
   },
 

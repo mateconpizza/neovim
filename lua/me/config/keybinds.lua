@@ -90,7 +90,7 @@ function M.setup_misc()
   -- stylua: ignore start
   -- map('<leader>bdA', function() vim.cmd('bufdo bd') end, 'close all')
   -- map('<leader>bda', function() vim.cmd('%bd|e#|bd#') end, 'close all but this one')
-  map('<leader>mb', function() Core.misc.banner() end, 'insert banner')
+  map('<leader>mb', Core.misc.banner, 'insert banner')
   -- stylua: ignore end
 end
 
@@ -127,7 +127,6 @@ function M.setup()
   M.setup_toggles()
   M.setup_misc()
   M.setup_word_wrap()
-  -- M.setup_blackhole_register()
 end
 
 return M

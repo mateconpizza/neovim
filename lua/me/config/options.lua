@@ -47,8 +47,8 @@ function M.setup_editor()
   opt.timeoutlen    = 500           -- Time in milliseconds to wait for a mapped sequence to complete.
   opt.updatetime    = 200           -- Decrease update time
   opt.pumheight     = 18            -- Maximum number of entries in a popup
-  opt.scrolloff     = 10            -- Lines of context
-  opt.sidescrolloff = 10            -- Lines of context
+  opt.scrolloff     = 6             -- Lines of context
+  opt.sidescrolloff = 6             -- Lines of context
   opt.wrap          = false         -- Disable line wrap
   opt.termguicolors = true          -- True color support
   opt.spelllang     = { 'en_us', 'es' } -- spellcheck
@@ -105,10 +105,8 @@ end
 
 --- Setup cursor appearance
 function M.setup_cursor()
-  vim.opt.guicursor = {
-    'a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor',
-    'sm:block-blinkwait175-blinkoff150-blinkon175',
-  }
+  vim.opt.guicursor =
+    'a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175'
 end
 
 --- Setup providers and external tools

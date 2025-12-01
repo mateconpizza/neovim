@@ -45,7 +45,7 @@ return {
     enabled = true,
   },
 
-  {
+  { -- https://github.com/nvim-mini/mini.hipatterns
     'nvim-mini/mini.hipatterns',
     version = '*',
     keys = {

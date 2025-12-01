@@ -3,7 +3,7 @@ local M = {}
 
 M.parsers = {}
 
-M.text_objects_keymaps = function()
+function M.text_objects_keymaps()
   local map = Core.keymap
   -- stylua: ignore start
   -- select

@@ -20,7 +20,7 @@ local function load_env_file()
     end
   end
 
-  Core.warnme("Loaded envs variables from '" .. env_file .. "'")
+  Core.log.warning('DAP: ', "Loaded envs variables from '" .. env_file .. "'")
   vim.print(env)
 
   return env

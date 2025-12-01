@@ -40,6 +40,7 @@ function M.setup()
       { import = 'me.plugins.lsp.servers.typescript' },
       { import = 'me.plugins.lsp.servers.bashlsp' },
       { import = 'me.plugins.lsp.servers.markdown' },
+      { import = 'me.plugins.lsp.servers.lua_ls' },
     },
     defaults = { lazy = false },
     install = { colorscheme = { 'retrobox' } },

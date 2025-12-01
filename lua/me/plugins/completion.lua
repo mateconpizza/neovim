@@ -17,7 +17,8 @@ return { -- https://github.com/ms-jpq/coq_nvim
     vim.g.coq_settings = {
       auto_start = 'shut-up',
       display = {
-        -- icons = { mappings = Core.icons.lsp.kinds, mode = 'long' },
+        mark_applied_notify = false,
+        icons = { mappings = Core.icons.lsp.kinds, mode = 'long' },
         ghost_text = { enabled = true },
         preview = {
           border = 'rounded',
@@ -25,6 +26,7 @@ return { -- https://github.com/ms-jpq/coq_nvim
         },
         pum = {
           source_context = { '(', ')' },
+          fast_close = false,
         },
       },
       completion = {
@@ -41,13 +43,13 @@ return { -- https://github.com/ms-jpq/coq_nvim
       },
       -- stylua: ignore
       clients = {
-        snippets    = { short_name = 'SNIP', always_on_top = true, user_path = vim.fn.stdpath('config') .. '/snippets', },
-        paths       = { short_name = 'PATH', always_on_top = true, preview_lines = 3 },
-        tags        = { short_name = 'TAGS', enabled = false },
-        tmux        = { short_name = 'TMUX' },
-        buffers     = { short_name = 'BUFF', same_filetype = true },
-        lsp         = { short_name = 'LSP' },
-        tree_sitter = { short_name = 'TS', enabled = false, always_on_top = false },
+        lsp         = { short_name = 'LSP',   always_on_top = {}, },
+        snippets    = { short_name = 'SNIP',  always_on_top = true, user_path = vim.fn.stdpath('config') .. '/snippets', },
+        paths       = { short_name = 'PATH',  always_on_top = true, preview_lines = 3 },
+        tree_sitter = { short_name = 'TS',    always_on_top = false, enabled = true },
+        buffers     = { short_name = 'BUFF',  same_filetype = true },
+        tags        = { short_name = 'TAGS',  enabled = false },
+        tmux        = { short_name = 'TMUX',  enabled = true },
       },
     }
 

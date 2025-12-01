@@ -5,7 +5,7 @@
 -- ┗┻┛╹╹ ╹┗━╸┗━╸╹ ╹ ╹
 --    thank you     --
 --
--- https://github.com/wincent/wincent/blob/fee810b2be44c0ff399e5058250f989c67068008/aspects/nvim/files/.config/nvim/init.lua
+-- https://github.com/wincent/wincent/blob/fee810b2be44c0ff399e5058250f989c67068008/aspects/nvim/files/.config/nvim/lua/wincent/foldexpr.lua
 
 local ft_glyph = {
   middot = '·',
@@ -157,9 +157,7 @@ function M.expr(line_number)
             -- Update line numbers of anything after the inserted/removed markers.
             local delta = new_last_line - last_line
             for i = position + #new_markers, #old_markers, 1 do
-              if i ~= 0 then
-                old_markers[i].line = old_markers[i].line + delta
-              end
+              if i ~= 0 then old_markers[i].line = old_markers[i].line + delta end
             end
           else
             -- Somehow, cache got cleared. Repopulate it.
@@ -204,25 +202,17 @@ function M.expr(line_number)
       --     baz
       --
       if marker.kind == 'start' then
-        if marker.line == line_number then
-          return '>' .. marker.level
-        end
+        if marker.line == line_number then return '>' .. marker.level end
         base = marker.level
       elseif marker.kind == 'end' then
-        if marker.line == line_number then
-          return '<' .. marker.level
-        end
+        if marker.line == line_number then return '<' .. marker.level end
         base = marker.level - 1
       elseif marker.kind == 'increase' then
         base = base + 1
-        if marker.line == line_number then
-          return '>' .. base
-        end
+        if marker.line == line_number then return '>' .. base end
       elseif marker.kind == 'decrease' then
         base = base - 1
-        if marker.line == line_number then
-          return '>' .. base
-        end
+        if marker.line == line_number then return '>' .. base end
       end
     else
       break

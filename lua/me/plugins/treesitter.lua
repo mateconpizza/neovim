@@ -85,7 +85,7 @@ return {
   },
   { -- https://github.com/windwp/nvim-ts-autotag
     'windwp/nvim-ts-autotag',
-    enabled = true,
+    enabled = false,
     opts = {
       aliases = {
         ['gotmpl'] = 'html',

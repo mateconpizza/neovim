@@ -8,7 +8,7 @@ local HOME = os.getenv('HOME')
 ---@return any
 function M.getenv(varname, default)
   -- TODO: checkout `vim.env`
-  Core.warnme('Core.env.getenv: deprecated')
+  Core.log.warning('Core.env.getenv: deprecated')
 end
 
 ---@param varname string
@@ -16,9 +16,7 @@ end
 ---@return string
 function M.get(varname, default)
   local value = os.getenv(varname)
-  if not value then
-    return default
-  end
+  if not value then return default end
   return value
 end
 
@@ -35,24 +33,25 @@ end
 
 ---@return string
 M.xdg_data_home = function()
-  -- FIX: vim.env.XDG_DATA_HOME or vim.env.HOME .. '/.local/share'
+  -- FIX: vim.fn.stdpath('data')
   return M.get('XDG_DATA_HOME', HOME .. '/.local/share')
 end
 
 ---@return string
 M.xdg_state_home = function()
-  -- FIX: vim.env.XDG_STATE_HOME or vim.env.HOME .. "/.local/state"
+  -- FIX: vim.fn.stdpath('state')
   return M.get('XDG_STATE_HOME', HOME .. '/.local/state')
 end
 
 ---@return string
 M.xdg_config_home = function()
-  -- FIX: vim.env.XDG_CONFIG_HOME or vim.env.HOME .. "/.config"
+  -- FIX: vim.fn.stdpath('config')
   return M.get('XDG_CONFIG_HOME', HOME .. '/.config')
 end
 
 ---@return string
 M.xdg_cache_home = function()
+  -- FIX: vim.fn.stdpath('cache')
   return M.get('XDG_CACHE_HOME', HOME .. '/.cache')
 end
 
