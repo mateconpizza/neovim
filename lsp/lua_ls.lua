@@ -26,6 +26,9 @@ return {
       doc = {
         privateName = { '^_' },
       },
+      semantic = {
+        enable = false,
+      },
       hint = {
         enable = true,
         setType = false,
@@ -36,4 +39,10 @@ return {
       },
     },
   },
+  on_attach = function(_, bufnr)
+    Core.keymap_buf(bufnr, '<leader>dL', '', '+lua')
+    Core.keymap_buf(bufnr, '<leader>dLs', function()
+      require('osv').launch({ port = 8086 })
+    end, 'start lua debugging')
+  end,
 }

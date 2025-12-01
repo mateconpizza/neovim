@@ -16,13 +16,14 @@ M.action = setmetatable({}, {
   end,
 })
 
----Registered LSP names
+-- registered LSP names
 M.servers = {}
 
 ---@class LspCommand: lsp.ExecuteCommandParams
 ---@field open? boolean
 ---@field handler? lsp.Handler
 
+-- execute an lsp command
 ---@param opts LspCommand
 function M.execute(opts)
   local params = {
@@ -33,6 +34,7 @@ function M.execute(opts)
   return vim.lsp.buf_request(0, 'workspace/executeCommand', params, opts.handler)
 end
 
+-- show available code actions
 M.code_action = function()
   if not Core.manager.has_plugin('fzf-lua') then
     Core.warnme('fzf-lua not installed. https://github.com/ibhagwan/fzf-lua')
@@ -46,12 +48,14 @@ M.code_action = function()
       col = 0,
       height = 0.3,
       width = 0.5,
-      preview = { hidden = 'hidden' },
+      ---@diagnostic disable-next-line: missing-fields
+      preview = { hidden = false },
     },
   })
 end
 
----@param on_attach function
+-- create an autocmd that calls the provided function when lsp attaches
+---@param on_attach function function to execute when LSP attaches to a buffer
 function M.on_attach(on_attach)
   vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
@@ -62,56 +66,66 @@ function M.on_attach(on_attach)
   })
 end
 
+-- get LSP capabilities enhanced with completion engine capabilities
+---@return table combined LSP capabilities
 function M.capabilities()
-  local has_blink, blink = pcall(require, 'blink.cmp')
+  -- coq.nvim
+  local has_coq, coq = pcall(require, 'coq')
   return vim.tbl_deep_extend(
     'force',
     {},
     vim.lsp.protocol.make_client_capabilities(),
-    has_blink and blink.get_lsp_capabilities() or {}
+    has_coq and coq.lsp_ensure_capabilities() or {}
   )
 end
 
----@param bufnr integer
+-- set up LSP keymaps for a buffer
+---@param bufnr integer buffer number to set keymaps on
+-- stylua: ignore
 function M.keymaps(bufnr)
   local map = Core.keymap_buf
-  -- stylua: ignore start
-  map(bufnr, 'gr', '', '+lsp', { 'n', 'v' })
+  map(bufnr, 'gr',  '', '+lsp', { 'n', 'v' })
   map(bufnr, 'grn', vim.lsp.buf.rename, 'lsp rename')
   map(bufnr, 'gra', M.code_action, 'code action', { 'n', 'v' })
-  map(bufnr, 'grr', "<CMD>FzfLua lsp_references      jump1=true ignore_current_line=true<CR>", 'goto references')
-  map(bufnr, 'gd',  "<CMD>FzfLua lsp_definitions     jump1=true ignore_current_line=true<CR>", 'goto definition')
-  map(bufnr, 'gri', "<CMD>FzfLua lsp_implementations jump1=true ignore_current_line=true<CR>", 'goto implementation')
-  map(bufnr, 'gy',  "<CMD>FzfLua lsp_typedefs        jump1=true ignore_current_line=true<CR>", 'type definition')
-  map(bufnr, 'gO',  "<CMD>FzfLua lsp_document_symbols<CR>", 'document symbols')
+  map(bufnr, 'grr', '<CMD>FzfLua lsp_references      jump1=true ignore_current_line=true<CR>', 'goto references')
+  map(bufnr, 'gd',  '<CMD>FzfLua lsp_definitions     jump1=true ignore_current_line=true<CR>', 'goto definition')
+  map(bufnr, 'gri', '<CMD>FzfLua lsp_implementations jump1=true ignore_current_line=true<CR>', 'goto implementation')
+  map(bufnr, 'gy',  '<CMD>FzfLua lsp_typedefs        jump1=true ignore_current_line=true<CR>', 'type definition')
+  map(bufnr, 'gO',  '<CMD>FzfLua lsp_document_symbols<CR>', 'document symbols')
   map(bufnr, 'K',   vim.lsp.buf.hover, 'hover documentation')
   map(bufnr, '<C-s>', vim.lsp.buf.signature_help, 'signature documentation', 'i')
   -- lsp
-  map(bufnr, '<leader>l', '', '+lsp', { 'n', 'v' })
-  map(bufnr, '<leader>lc', vim.lsp.codelens.run, 'run codelens', { 'n', 'v' })
-  map(bufnr, '<leader>lC', vim.lsp.codelens.refresh, 'refresh n display codelens')
-  map(bufnr, '<leader>ld', M.diagnostic.show_buffer_diagnostics, 'quick fix diagnostic')
-  map(bufnr, '<leader>lws', "<CMD>FzfLua lsp_workspace_symbols<CR>", 'workspace symbols')
+  map(bufnr, '<leader>l',   '', '+lsp', { 'n', 'v' })
+  map(bufnr, '<leader>lc',  vim.lsp.codelens.run, 'run codelens', { 'n', 'v' })
+  map(bufnr, '<leader>lC',  vim.lsp.codelens.refresh, 'refresh n display codelens')
+  map(bufnr, '<leader>lws', '<CMD>FzfLua lsp_workspace_symbols<CR>', 'workspace symbols')
   map(bufnr, '<leader>lwa', vim.lsp.buf.add_workspace_folder, 'workspace add folder')
   map(bufnr, '<leader>lwr', vim.lsp.buf.remove_workspace_folder, 'workspace remove Folder')
-  map(bufnr, '<leader>lwl', function() vim.print(vim.lsp.buf.list_workspace_folders()) end, 'workspace list folders')
-  -- stylua: ignore stop
+  map(bufnr, '<leader>lwl', function()
+    vim.print(vim.lsp.buf.list_workspace_folders())
+  end, 'workspace list folders')
+  -- diagnostics
+  map(bufnr, '<leader>ld', '', '+diagnostic', { 'n', 'v' })
+  map(bufnr, '<leader>ldc', M.diagnostic.copy, 'copy diagnostic error')
+  map(bufnr, '<leader>lds', M.diagnostic.show_buffer_diagnostics, 'quick fix diagnostic')
 end
 
+-- get deduplicated list of registered LSP servers
+---@return table unique server names
 function M.get_servers()
   return Core.utils.deduplicate(M.servers)
 end
 
----Register one or more servers.
+-- register one or more servers.
 ---@param names string|string[] A server name or a table of server names
 ---@return table # Returns the module table `M` for chaining
 function M.register(names)
-  -- Table
+  -- table
   if type(names) == 'table' then
     for _, name in ipairs(names) do
       table.insert(M.servers, name)
     end
-  -- String
+  -- string
   elseif type(names) == 'string' then
     table.insert(M.servers, names)
   else
@@ -121,12 +135,42 @@ function M.register(names)
   return M
 end
 
----Enables all registered LSPs.
+-- enables all registered lsps.
 ---@return nil
 function M.start()
   for _, name in pairs(M.servers) do
+    vim.lsp.config(name, { capabilities = Core.lsp.capabilities() })
     vim.lsp.enable(name)
   end
+end
+
+-- create user command to manually start all LSP servers
+function M.usercmd_start()
+  vim.api.nvim_create_user_command('LspStart', function()
+    -- Enable all LSPs
+    M.start()
+  end, {})
+end
+
+-- create user command to show LSP health information
+function M.usercmd_info()
+  vim.api.nvim_create_user_command('LspInfo', function()
+    vim.cmd('checkhealth vim.lsp')
+  end, {})
+end
+
+-- create user command to open LSP log file
+function M.usercmd_log()
+  vim.api.nvim_create_user_command('LspLog', function()
+    local logpath = Core.env.xdg_state_home() .. '/nvim/' .. 'lsp.log'
+    vim.cmd('e ' .. logpath)
+  end, {})
+end
+
+-- setup LSP keymaps and user commands
+function M.setup()
+  Core.keymap('<leader>ls', Core.lsp.start, 'start LSP')
+  M.usercmd_start()
 end
 
 return M

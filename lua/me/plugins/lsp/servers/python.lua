@@ -11,9 +11,7 @@ return {
   { -- https://github.com/williamboman/mason.nvim
     'williamboman/mason.nvim',
     opts = function(_, opts)
-      if type(opts.ensure_installed) == 'table' then
-        vim.list_extend(opts.ensure_installed, { 'debugpy', 'mypy' })
-      end
+      if type(opts.ensure_installed) == 'table' then vim.list_extend(opts.ensure_installed, { 'debugpy', 'mypy' }) end
     end,
   },
 
@@ -23,13 +21,6 @@ return {
     enabled = true,
     dependencies = { -- https://github.com/mfussenegger/nvim-dap-python
       { 'mfussenegger/nvim-dap-python', ft = 'python', enabled = true },
-    },
-    -- stylua: ignore
-    keys = {
-      { '<leader>dp', '', desc = '+python'},
-      { '<leader>dpm', function() require('dap-python').test_method() end, desc = 'python: test method' },
-      { '<leader>dpc', function() require('dap-python').test_class() end, desc = 'python: test class' },
-      { '<leader>dpd', function() require('dap-python').debug_selection() end, desc = 'python: debug selection' },
     },
     opts = function()
       local pypath = Core.env.xdg_data_home() .. '/nvim/mason/packages/debugpy/venv/bin/python'

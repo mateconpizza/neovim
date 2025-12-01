@@ -10,8 +10,6 @@ Core.lsp.on_attach(function(_, bufnr)
   Core.utils.gc_logfile(logpath, 1024)
 end)
 
-vim.lsp.config('*', { capabilities = Core.lsp.capabilities() })
-
 Core.lsp.register({
   'basedpyright',
   'bashls',
@@ -28,7 +26,6 @@ Core.lsp.register({
   'texlab',
   'vtsls',
   'yamlls',
+  'vimls',
+  'clangd',
 })
-
--- Enable all LSPs
-Core.lsp.start()

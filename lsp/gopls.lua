@@ -28,6 +28,7 @@ return {
       },
       analyses = {
         nilness = true,
+        shadow = true,
         unusedparams = true,
         unusedwrite = true,
         useany = true,
@@ -36,7 +37,7 @@ return {
       completeUnimported = true,
       staticcheck = true,
       directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules' },
-      semanticTokens = false,
+      semanticTokens = true,
     },
   },
 }

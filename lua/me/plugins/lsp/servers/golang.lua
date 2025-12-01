@@ -5,15 +5,11 @@ local function load_env_file()
   local cwd = vim.fn.getcwd()
   local env_file = cwd .. '/.env'
 
-  if vim.fn.filereadable(env_file) == 0 then
-    return env
-  end
+  if vim.fn.filereadable(env_file) == 0 then return env end
 
   -- confirm user
   local q = "Load envs variables from '" .. env_file .. "'? [Y/n]: "
-  if not Core.confirm(q, { 'Yes', 'y', '' }) then
-    return env
-  end
+  if not Core.confirm(q, { 'Yes', 'y', '' }) then return env end
 
   for line in io.lines(env_file) do
     local key, val = line:match('^%s*([%w_]+)%s*=%s*(.*)%s*$')
