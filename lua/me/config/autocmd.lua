@@ -128,8 +128,8 @@ function M.setup_lsp_attach()
   autocmd({ 'LspAttach' }, {
     group = augroup('lsp_attach'),
     callback = function()
-      Core.commands.lsp_info()
-      Core.commands.lsp_log()
+      Core.lsp.usercmd_info()
+      Core.lsp.usercmd_log()
     end,
     desc = 'Run LSP commands on attach',
   })

@@ -63,4 +63,17 @@ function M.show_buffer_diagnostics()
   vim.cmd('copen')
 end
 
+-- copy diagnostic message from current cursor position
+function M.copy()
+  local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 })
+  if #diagnostics == 0 then
+    vim.notify('No diagnostic here', vim.log.levels.INFO)
+    return
+  end
+
+  local msg = diagnostics[1].message
+  vim.fn.setreg('+', msg)
+  vim.notify('copied diagnostic: ' .. msg, vim.log.levels.INFO)
+end
+
 return M
