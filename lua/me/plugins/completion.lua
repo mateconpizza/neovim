@@ -69,7 +69,7 @@ return { -- https://github.com/ms-jpq/coq_nvim
     { 'ms-jpq/coq.thirdparty', branch = '3p' },
   },
   config = function()
-    if vim.bo.filetype == 'gomarks' then require('me.config.coq_gomarks').setup() end
+    if vim.bo.filetype == 'gomarks' then require('me.config.gomarks').setup() end
 
     -- stylua: ignore
     require('coq_3p')({
