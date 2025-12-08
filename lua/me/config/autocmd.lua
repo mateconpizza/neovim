@@ -5,7 +5,6 @@ local M = {}
 
 local augroup = Core.augroup
 local autocmd = vim.api.nvim_create_autocmd
-
 local uv = vim.uv or vim.loop
 
 --- Setup highlight on yank autocmd
@@ -55,16 +54,6 @@ function M.setup_xresources_reload()
     pattern = { '*xdefaults', '*Xresources', '*xresources' },
     command = '!xrdb -load ~/.config/X11/xresources',
     desc = 'reload xresources after buffer write',
-  })
-end
-
---- Setup dunst config reload on save
-function M.setup_dunst_reload()
-  autocmd({ 'BufWritePost' }, {
-    group = augroup('Dunstrc'),
-    pattern = { 'dunstrc' },
-    command = '!dunst-ts -r',
-    desc = 'reload dunstrc after buffer write',
   })
 end
 
@@ -129,25 +118,8 @@ function M.setup_lsp_attach()
     group = augroup('lsp_attach'),
     callback = function()
       Core.lsp.usercmd_info()
-      Core.lsp.usercmd_log()
     end,
     desc = 'Run LSP commands on attach',
-  })
-end
-
---- Setup fugitive X key disable
-function M.setup_fugitive_disable_x()
-  autocmd('FileType', {
-    group = augroup('fugitive_doom'),
-    pattern = '*fugitive*',
-    callback = function(args)
-      if not vim.b[args.buf].fugitive_x_disabled then
-        Core.log.warning('autocmd: ', 'fugitive_X disabled')
-        vim.keymap.set('n', 'X', '<Nop>', { buffer = args.buf, silent = true })
-        vim.b[args.buf].fugitive_x_disabled = true
-      end
-    end,
-    desc = 'disable X (discard changes) in fugitive buffers',
   })
 end
 
@@ -187,13 +159,11 @@ function M.setup()
   M.setup_easy_close()
   M.setup_restore_cursor()
   M.setup_xresources_reload()
-  M.setup_dunst_reload()
   M.setup_json_conceal()
   M.setup_text_files()
   M.setup_auto_root()
   M.setup_go_templates()
   M.setup_lsp_attach()
-  M.setup_fugitive_disable_x()
   M.setup_bigfile()
 end
 
