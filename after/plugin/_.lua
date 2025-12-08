@@ -3,9 +3,10 @@ _G.P = function(v)
   return v
 end
 
-local c = Core.colors.is_darkmode() and Core.colors.gruvbox_dark_medium() or Core.colors.gruvbox_light_medium()
-Core.hi.LogPrefixMsg = { fg = c.extras.gray, bold = true }
-Core.hi.LogInfoMsg = { fg = c.bright.blue }
-Core.hi.LogSuccessMsg = { fg = c.bright.green }
-Core.hi.LogWarningMsg = { fg = c.bright.yellow }
-Core.hi.LogErrorMsg = { fg = c.bright.red }
+local c = Core.colors
+local p = Core.colors.current()
+Core.hi.LogPrefixMsg = { fg = c.darken(p.extras.gray, 0.45, p.bg), bold = true }
+Core.hi.LogInfoMsg = { fg = p.bright.blue }
+Core.hi.LogSuccessMsg = { fg = p.bright.green }
+Core.hi.LogWarningMsg = { fg = p.bright.yellow }
+Core.hi.LogErrorMsg = { fg = p.bright.red }

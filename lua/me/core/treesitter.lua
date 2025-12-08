@@ -30,18 +30,19 @@ function M.text_objects_keymaps()
 end
 
 ---@param parsers string[]
-M.add = function(parsers)
+function M.add(parsers)
   vim.list_extend(M.parsers, parsers)
 end
 
-M.setup = function()
+function M.setup()
   local ok, ts = pcall(require, 'nvim-treesitter')
   if not ok then
-    Core.log.warning('treesitter: ', 'nvim-treesitter not found')
+    Core.log.warning('[treesitter] ', 'nvim-treesitter not found')
     return
   end
 
   M.parsers = Core.utils.deduplicate(M.parsers)
+
   ts.install(M.parsers)
   vim.api.nvim_create_autocmd('FileType', {
     pattern = M.parsers,

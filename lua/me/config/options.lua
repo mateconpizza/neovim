@@ -12,7 +12,7 @@ end
 
 --- Setup colorscheme options
 function M.setup_colorscheme()
-  vim.o.background = 'light'
+  vim.o.background = 'dark'
 end
 
 --- Setup editor options

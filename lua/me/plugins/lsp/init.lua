@@ -43,17 +43,15 @@ return {
       mr.refresh(function()
         for _, tool in ipairs(opts.ensure_installed) do
           local p = mr.get_package(tool)
-          if not p:is_installed() then
-            p:install()
-          end
+          if not p:is_installed() then p:install() end
         end
       end)
     end,
   },
 
-  { -- https://github.com/b0o/SchemaStore.nvim
-    'b0o/SchemaStore.nvim',
-    enabled = false,
-    lazy = false,
-  },
+  -- { -- https://github.com/b0o/SchemaStore.nvim
+  --   'b0o/SchemaStore.nvim',
+  --   enabled = false,
+  --   lazy = false,
+  -- },
 }

@@ -22,7 +22,7 @@ return {
         function()
           neocodeium_enabled = not neocodeium_enabled
           vim.cmd('NeoCodeium toggle')
-          Core.log.info('coding: ', neocodeium_enabled and 'neocodeium enabled' or 'neocodeium disabled')
+          Core.log.info('[coding] ', neocodeium_enabled and 'neocodeium enabled' or 'neocodeium disabled')
         end,
         desc = 'neocodeium toggle',
       },
@@ -47,6 +47,7 @@ return {
         -- Load luvit types when the `vim.uv` word is found
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
         { path = 'Core', words = { 'Core' } },
+        { path = 'LazyVim', words = { 'LazyVim' } },
       },
     },
   },

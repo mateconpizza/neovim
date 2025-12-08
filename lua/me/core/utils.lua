@@ -1,6 +1,8 @@
 ---@class me.core.utils
 local M = {}
 
+local uv = vim.uv or vim.loop
+
 -- checks if a value exists in an array
 ---@param array string[]
 ---@param target any
@@ -38,28 +40,20 @@ function M.deduplicate(list)
   return ret
 end
 
--- wich command
----@param cmd string
----@return string|nil
-M.which = function(cmd)
-  local result = io.popen('which ' .. cmd, 'r')
-  if not result then return nil end
-
-  local path = result:read('*a')
-  if path == '' then return nil end
-
-  result:close()
-  return path
+-- check if path is file
+---@return boolean
+---@param path string
+M.is_file = function(path)
+  local stat = uv.fs_stat(path)
+  return stat ~= nil and stat.type == 'file'
 end
 
--- check if file exists
+-- check if path is dir
 ---@return boolean
----@param f string
-M.file_exist = function(f)
-  local file = io.open(f, 'r')
-  if not file then return false end
-
-  return true
+---@param path string
+M.is_dir = function(path)
+  local stat = uv.fs_stat(path)
+  return stat ~= nil and stat.type == 'directory'
 end
 
 -- save table to json
@@ -68,12 +62,13 @@ end
 M.write_json = function(fname, t)
   local data = vim.fn.json_encode(t)
   if not data then
-    Core.log.warning('write JSON: ', 'failed to encode data to JSON')
+    Core.log.warning('[write JSON] ', 'failed to encode data to JSON')
     return false
   end
 
   local success, err = pcall(vim.fn.writefile, { data }, fname)
-  if not success then Core.log.error('write JSON: ', err) end
+  if not success then Core.log.error('[write JSON] ', err) end
+  Core.log.debug('[write JSON] ', 'successfully saved ' .. fname)
 
   return success
 end
@@ -87,19 +82,22 @@ end
 ---@param path string
 ---@param size_kb number
 function M.gc_logfile(path, size_kb)
+  if not M.is_file(path) then
+    Core.log.error('[gc] ', string.format('Log file %s does not exist', path))
+    return
+  end
+
   size_kb = size_kb or 500
-  local logfile = io.open(path, 'r')
-  if not logfile then return end
+  local stat = uv.fs_stat(path)
+  if not stat then return end
 
-  local size_bytes = logfile:seek('end')
-  logfile:close()
-
+  local size_bytes = stat.size
   local kilobytes = size_bytes / 1024
 
   if kilobytes > size_kb then
-    Core.log.warning(
-      'Log file size: ',
-      string.format('%.2f KB exceeds limit of %d KB\nRemoving %s', kilobytes, size_kb, path)
+    Core.log.info(
+      '[gc] ',
+      string.format('Log file size %.2f KB exceeds limit of %d KB\nRemoving %s', kilobytes, size_kb, path)
     )
     os.remove(path)
   end

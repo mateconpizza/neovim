@@ -606,12 +606,12 @@ end
 
 ---@return me.core.colors.Palette
 function M.catppuccin_macchiato()
-  return M.palettes.catppuccin.macchiato
+  return M.palettes.catppuccin.dark
 end
 
 ---@return me.core.colors.Palette
 function M.catppuccin_latte()
-  return M.palettes.catppuccin.latte
+  return M.palettes.catppuccin.light
 end
 
 ---@return me.core.colors.Palette
@@ -669,10 +669,6 @@ function M.is_darkmode()
 end
 
 ---@return me.core.colors.Palette
-function M.get_colors()
-  return M.gruvbox_dark_medium() and M.gruvbox_dark_medium() or M.gruvbox_light_medium()
-end
-
 function M.current()
   return M.gruvbox_dark_medium()
 end

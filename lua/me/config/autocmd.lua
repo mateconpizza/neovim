@@ -145,7 +145,7 @@ function M.setup_bigfile()
         vim.opt_local.winbar = ''
 
         -- buffer treesitter
-        Core.log.warning('autocmd: ', 'treesitter disabled on file: ' .. event.file)
+        Core.log.warning('[autocmd] ', 'treesitter disabled on file: ' .. event.file)
         vim.treesitter.stop(bufnr)
       end
     end,

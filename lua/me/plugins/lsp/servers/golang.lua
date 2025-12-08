@@ -20,7 +20,7 @@ local function load_env_file()
     end
   end
 
-  Core.log.warning('DAP: ', "Loaded envs variables from '" .. env_file .. "'")
+  Core.log.warning('[DAP] ', "Loaded envs variables from '" .. env_file .. "'")
   vim.print(env)
 
   return env
@@ -110,6 +110,11 @@ return {
         version = '*',
         enabled = Core.env.testing,
         build = function()
+          if not Core.is_executable('gotestsum') then
+            Core.log.info('[neotest] ', "installing dep 'gotestsum'")
+            vim.system({ 'go', 'install', 'gotest.tools/gotestsum@latest' }):wait()
+          end
+
           vim.cmd([[:TSUpdate go]])
         end,
       },

@@ -40,7 +40,7 @@ end
 -- show available code actions
 M.code_action = function()
   if not Core.manager.has_plugin('fzf-lua') then
-    Core.log.warning('LSP code action: ', 'fzf-lua not installed. https://github.com/ibhagwan/fzf-lua')
+    Core.log.warning('[LSP code action] ', 'fzf-lua not installed. https://github.com/ibhagwan/fzf-lua')
     return
   end
 
@@ -49,7 +49,7 @@ M.code_action = function()
       relative = 'cursor',
       row = 1.01,
       col = 0,
-      height = 0.3,
+      height = 0.4,
       width = 0.5,
       ---@diagnostic disable-next-line: missing-fields
       preview = { hidden = false },
@@ -111,7 +111,7 @@ function M.keymaps(bufnr)
 
   -- diagnostics
   map(bufnr, '<leader>ld', '', '+diagnostic', { 'n', 'v' })
-  map(bufnr, '<leader>ldc', M.diagnostic.copy, 'copy diagnostic error')
+  map(bufnr, '<leader>ldy', M.diagnostic.yank, 'copy diagnostic error')
   map(bufnr, '<leader>lds', M.diagnostic.show_buffer_diagnostics, 'quick fix diagnostic')
 end
 
@@ -143,7 +143,7 @@ end
 -- enables all registered lsps.
 ---@return nil
 function M.start()
-  if M._started then return Core.log.warning('LSP: ', 'already started') end
+  if M._started then return Core.log.warning('[LSP] ', 'already started') end
   for _, name in pairs(M.servers) do
     vim.lsp.config(name, { capabilities = Core.lsp.capabilities() })
     vim.lsp.enable(name)
@@ -154,7 +154,7 @@ end
 -- create user command to manually start all LSP servers
 function M.usercmd_start()
   vim.api.nvim_create_user_command('LspStart', function()
-    -- Enable all LSPs
+    if not M._started then Core.log.debug('[LSP] ', 'starting...') end
     M.start()
   end, {})
 end
@@ -177,6 +177,7 @@ end
 -- setup LSP keymaps and user commands
 function M.setup()
   Core.keymap('<leader>ls', Core.lsp.start, 'start LSP')
+  M.usercmd_log()
   M.usercmd_start()
 end
 

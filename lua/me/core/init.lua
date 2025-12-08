@@ -129,8 +129,6 @@ end
 
 function M.manpages()
   vim.cmd('FzfLua manpages previewer=man_native')
-  -- FzfLua manpages previewer=man_native
-  -- require('fzf-lua').manpages({ previewer = { 'man_native' } })
 end
 
 ---@param name string

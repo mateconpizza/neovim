@@ -64,7 +64,7 @@ function M.show_buffer_diagnostics()
 end
 
 -- copy diagnostic message from current cursor position
-function M.copy()
+function M.yank()
   local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 })
   if #diagnostics == 0 then
     vim.notify('No diagnostic here', vim.log.levels.INFO)

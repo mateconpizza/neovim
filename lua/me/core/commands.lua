@@ -3,7 +3,9 @@
 local user_command = vim.api.nvim_create_user_command
 
 ---@class me.core.commands
-local M = {}
+local M = {
+  _debug = false,
+}
 
 function M.grep()
   user_command('Grep', function(opts)
@@ -25,8 +27,15 @@ function M.grep()
   })
 end
 
+function M.debug()
+  user_command('CoreDebugToggle', function()
+    Core.log.debug_toggle()
+  end, { desc = 'toggle debug mode' })
+end
+
 function M.setup()
   M.grep()
+  M.debug()
 end
 
 return M

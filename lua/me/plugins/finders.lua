@@ -18,9 +18,9 @@ return {
           file_icons = true,
           git_icons = true,
         },
-        files = {
-          previewer = false,
-        },
+        -- files = {
+        --   previewer = true,
+        -- },
         oldfiles = {
           include_current_session = true,
         },
