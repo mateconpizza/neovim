@@ -2,16 +2,6 @@ local neocodeium_enabled = false
 
 return {
 
-  { -- https://github.com/stevearc/aerial.nvim
-    'stevearc/aerial.nvim',
-    opts = { show_guides = true },
-    keys = {
-      { '<F2>', '<CMD>AerialToggle<CR>', desc = 'aerial toggle' },
-      { '[f', '<CMD>AerialPrev<CR>', desc = 'aerial prev' },
-      { ']f', '<CMD>AerialNext<CR>', desc = 'aerial next' },
-    },
-  },
-
   { -- https://github.com/monkoose/neocodeium
     'monkoose/neocodeium',
     cmd = 'NeoCodeium',

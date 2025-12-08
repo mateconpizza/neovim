@@ -91,10 +91,26 @@ function M.keymaps(bufnr)
   map(bufnr, 'grn', vim.lsp.buf.rename, 'lsp rename')
   map(bufnr, 'gra', M.code_action, 'code action', { 'n', 'v' })
   map(bufnr, 'grr', '<CMD>FzfLua lsp_references      jump1=true ignore_current_line=true<CR>', 'goto references')
-  map(bufnr, 'gd',  '<CMD>FzfLua lsp_definitions     jump1=true ignore_current_line=true<CR>', 'goto definition')
+  map(bufnr, "gd", function()
+    require('fzf-lua').lsp_definitions({
+      jump1 = true,
+      ignore_current_line = true,
+      workspace = true,
+      ---@diagnostic disable-next-line: missing-fields
+      winopts = { preview = { layout = 'vertical' }},
+    })
+  end, "goto definition")
   map(bufnr, 'gri', '<CMD>FzfLua lsp_implementations jump1=true ignore_current_line=true<CR>', 'goto implementation')
   map(bufnr, 'gy',  '<CMD>FzfLua lsp_typedefs        jump1=true ignore_current_line=true<CR>', 'type definition')
   map(bufnr, 'gO',  '<CMD>FzfLua lsp_document_symbols<CR>', 'document symbols')
+  map(bufnr, '<F2>', function()
+    require('fzf-lua').lsp_document_symbols({
+      prompt = "Symbols> ",
+      symbols = { 'Function', 'Method' },
+      ---@diagnostic disable-next-line: missing-fields
+      winopts = { preview = { layout = "vertical" } },
+    })
+  end, 'document functions|methods')
   map(bufnr, 'K',   vim.lsp.buf.hover, 'hover documentation')
   map(bufnr, '<C-s>', vim.lsp.buf.signature_help, 'signature documentation', 'i')
 
