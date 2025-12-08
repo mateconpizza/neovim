@@ -178,7 +178,59 @@ return {
       { 's', '<Plug>(leap)', desc = 'leap forward to', mode = { 'n', 'x', 'o' } },
       { 'S', '<Plug>(leap-backward)', desc = 'leap backward to', mode = { 'n', 'x', 'o' } },
       { 'gs', '<Plug>(leap-from-window)', desc = 'leap from windows', mode = { 'n', 'x', 'o' } },
+      {
+        mode = { 'n', 'x', 'o' },
+        '|',
+        function()
+          local line = vim.fn.line('.')
+          -- skip 3-3 lines around the cursor.
+          local top, bot = unpack({ math.max(1, line - 3), line + 3 })
+          require('leap').leap({
+            pattern = '\\v(%<' .. top .. 'l|%>' .. bot .. 'l)$',
+            windows = { vim.fn.win_getid() },
+            opts = { safe_labels = '' },
+          })
+        end,
+        desc = 'jump to lines',
+      },
+      -- f/t motions
+      { 'f', mode = { 'n', 'x', 'o' }, desc = 'leap f motion' },
+      { 'F', mode = { 'n', 'x', 'o' }, desc = 'leap F motion' },
+      { 't', mode = { 'n', 'x', 'o' }, desc = 'leap t motion' },
+      { 'T', mode = { 'n', 'x', 'o' }, desc = 'leap T motion' },
     },
+    config = function()
+      -- setup f/t motions
+      local function as_ft(key_specific_args)
+        local common_args = {
+          inputlen = 1,
+          inclusive = true,
+          pattern = function(pat)
+            return '\\%.l' .. pat -- limit to current line
+          end,
+          opts = {
+            labels = '', -- force autojump
+            safe_labels = vim.fn.mode(1):match('[no]') and '' or nil, -- [1]
+          },
+        }
+        return vim.tbl_deep_extend('keep', common_args, key_specific_args)
+      end
+
+      local clever = require('leap.user').with_traversal_keys -- [2]
+      local clever_f = clever('f', 'F')
+      local clever_t = clever('t', 'T')
+
+      for key, key_specific_args in pairs({
+        f = { opts = clever_f },
+        F = { backward = true, opts = clever_f },
+        t = { offset = -1, opts = clever_t },
+        T = { backward = true, offset = 1, opts = clever_t },
+      }) do
+        Core.keymap(key, function()
+          require('leap').leap(as_ft(key_specific_args))
+        end, '', { 'n', 'x', 'o' })
+      end
+    end,
     enabled = true,
   },
 }
