@@ -183,6 +183,19 @@ function M.setup_leap_search_integration()
   })
 end
 
+function M.setup_typos_linter()
+  autocmd({ 'BufWritePost', 'BufReadPost', 'InsertLeave' }, {
+    callback = function()
+      local ok, lint = pcall(require, 'lint')
+      if ok then
+        lint.try_lint('typos')
+        return
+      end
+    end,
+    desc = 'search for typos',
+  })
+end
+
 --- Initialize all autocmds
 function M.setup()
   M.setup_highlight_yank()
@@ -196,6 +209,7 @@ function M.setup()
   M.setup_lsp_attach()
   M.setup_bigfile()
   M.setup_leap_search_integration()
+  M.setup_typos_linter()
 end
 
 return M
