@@ -22,8 +22,8 @@ local fmtcfg = {
 }
 
 return {
-  { -- https://github.com/stevearc/conform.nvim
-    'stevearc/conform.nvim',
+  { -- lightweight yet powerful formatter plugin
+    'https://github.com/stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     enabled = true,
@@ -79,9 +79,7 @@ return {
         },
 
         format_on_save = function(_)
-          if not vim.g.enable_autoformat then
-            return
-          end
+          if not vim.g.enable_autoformat then return end
 
           return { timeout_ms = 500, lsp_format = 'fallback', lsp_fallback = true }
         end,

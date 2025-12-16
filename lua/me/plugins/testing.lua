@@ -1,13 +1,12 @@
 -- me.plugins.testing
 
 return {
-  { -- https://github.com/nvim-neotest/neotest
-    'nvim-neotest/neotest',
+  { -- an extensible framework for interacting with tests
+    'https://github.com/nvim-neotest/neotest',
     enabled = Core.env.testing,
-    -- https://github.com/nvim-neotest/neotest/issues/531
     dependencies = {
-      'nvim-neotest/nvim-nio',
-      'nvim-lua/plenary.nvim',
+      'https://github.com/nvim-neotest/nvim-nio', -- a library for asynchronous io
+      'https://github.com/nvim-lua/plenary.nvim', -- all the lua functions I don't want to write twice
     },
     opts = {
       log_level = vim.log.levels.DEBUG,
@@ -74,12 +73,17 @@ return {
     },
   },
 
-  { -- https://github.com/mfussenegger/nvim-dap
-    'mfussenegger/nvim-dap',
+  { -- debug Adapter Protocol client implementation for Neovim
+    'https://codeberg.org/mfussenegger/nvim-dap',
     optional = true,
-    -- stylua: ignore
     keys = {
-      { "<leader>td", function() require("neotest").run.run({strategy = "dap"}) end, desc = "test and debug nearest" },
+      {
+        '<leader>td',
+        function()
+          require('neotest').run.run({ strategy = 'dap' })
+        end,
+        desc = 'test and debug nearest',
+      },
     },
   },
 }

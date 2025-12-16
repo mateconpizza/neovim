@@ -1,38 +1,24 @@
-local icons = Core.icons
-local icon_indent = icons.all().bar.b
-local colors = Core.colors.current()
-
 return {
 
-  { -- https://github.com/nvim-tree/nvim-web-devicons
-    'nvim-tree/nvim-web-devicons',
-    enabled = true,
+  { -- icon provider
+    'https://github.com/nvim-mini/mini.icons',
+    version = '*',
     opts = {
-      override_by_extension = {
-        ['gomarks'] = {
-          icon = Core.icons.lsp.kinds.Field,
-          color = colors.normal.green,
-          name = 'Bookmark',
-        },
-        ['gohtml'] = {
-          icon = '',
-          color = colors.normal.red,
-          name = 'GoHTML',
-        },
-        ['snip'] = {
-          icon = '',
-          color = colors.bright.magenta,
-          name = 'Snippet',
-        },
+      default = {
+        file = { glyph = '󰈤' },
+      },
+      extension = {
+        ['gomarks'] = { glyph = Core.icons.lsp.kinds.Field, hl = 'MiniIconsGreen' },
+        ['snip'] = { glyph = '', hl = 'MiniIconsPurple' },
+        ['gohtml'] = { glyph = '', hl = 'MiniIconsPurple' },
       },
     },
-    lazy = true,
   },
 
-  { -- https://github.com/tzachar/local-highlight.nvim
-    'tzachar/local-highlight.nvim',
+  { -- highlight uses of the word under the cursor
+    'https://github.com/tzachar/local-highlight.nvim',
     keys = {
-      { '<leader>bw', '<CMD>LocalHighlightToggle<CR>', desc = 'toggle highlight word' },
+      { '<leader>bw', vim.cmd.LocalHighlightToggle, desc = 'toggle highlight word' },
     },
     opts = {
       hlgroup = 'CurrentWord',
@@ -45,91 +31,76 @@ return {
     enabled = true,
   },
 
-  { -- https://github.com/nvim-mini/mini.hipatterns
-    'nvim-mini/mini.hipatterns',
-    version = '*',
+  { -- the fastest neovim colorizer
+    'https://github.com/NvChad/nvim-colorizer.lua',
+    cmd = {
+      'ColorizerAttachToBuffer',
+      'ColorizerDetachFromBuffer',
+      'ColorizerReloadAllBuffers',
+      'ColorizerToggle',
+    },
     keys = {
-      {
-        '<leader>bc',
-        function()
-          require('mini.hipatterns').toggle(vim.api.nvim_get_current_buf())
-        end,
-        desc = 'toggle colorizer',
-      },
+      { '<leader>bc', '<CMD>ColorizerToggle<CR>', desc = 'toggle colorizer' },
     },
-    config = function()
-      local hipatterns = require('mini.hipatterns')
-      hipatterns.setup({
-        highlighters = {
-          keymap_cmd = {
-            pattern = '<CMD>',
-            group = 'Special',
-          },
-          keymap_cr = {
-            pattern = '<CR>',
-            group = 'Special',
-          },
-          keymap_plug = {
-            pattern = '<Plug>',
-            group = 'Special',
-          },
-
-          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-          fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-          hack = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
-          todo = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
-          note = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
-
-          -- Highlight hex color strings (`#rrggbb`) using that color
-          hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
-        },
-      })
-
-      Core.hi.MiniHipatternsFixme = { link = 'TSDanger' }
-      Core.hi.MiniHipatternsHack = { link = 'TSWarning' }
-      Core.hi.MiniHipatternsTodo = { link = 'Todo' }
-      Core.hi.MiniHipatternsNote = { link = 'TSNote' }
-    end,
-  },
-
-  { -- https://github.com/lukas-reineke/indent-blankline.nvim
-    'lukas-reineke/indent-blankline.nvim',
-    event = 'VeryLazy',
-    enabled = false,
     opts = {
-      indent = {
-        char = icon_indent,
-        tab_char = icon_indent,
-      },
-      scope = { enabled = false },
-      exclude = {
-        filetypes = Core.defaults.exclude_filetypes,
+      filetypes = { '*', '!lazy' },
+      buftype = { '*', '!prompt', '!nofile', '!TelescopePrompt' },
+      user_default_options = {
+        RGB = true, -- #RGB hex codes
+        RRGGBB = true, -- #RRGGBB hex codes
+        names = false, -- "Name" codes like Blue
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
+        AARRGGBB = false, -- 0xAARRGGBB hex codes
+        rgb_fn = true, -- CSS rgb() and rgba() functions
+        hsl_fn = true, -- CSS hsl() and hsla() functions
+        css = false, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+        -- Available modes for `mode`: foreground, background,  virtualtext
+        mode = 'background', -- Set the display mode.
+        virtualtext = '■',
       },
     },
-    main = 'ibl',
+    enabled = true,
   },
 
-  { -- https://github.com/echasnovski/mini.indentscope
-    'echasnovski/mini.indentscope',
-    version = false, -- wait till new 0.7.0 release to put it back on semver
-    enabled = false,
-    event = 'VeryLazy',
-    opts = {
-      symbol = icon_indent,
-      options = { try_as_border = true },
-    },
-    init = function()
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = Core.defaults.exclude_filetypes,
-        callback = function()
-          vim.b.miniindentscope_disable = true
-        end,
-      })
-    end,
-  },
+  -- { -- indent guides
+  --   'https://github.com/lukas-reineke/indent-blankline.nvim',
+  --   event = 'VeryLazy',
+  --   enabled = false,
+  --   opts = {
+  --     indent = {
+  --       char = icon_indent,
+  --       tab_char = icon_indent,
+  --     },
+  --     scope = { enabled = false },
+  --     exclude = {
+  --       filetypes = Core.defaults.exclude_filetypes,
+  --     },
+  --   },
+  --   main = 'ibl',
+  -- },
+  --
+  -- { -- visualize and operate on indent scope
+  --   'https://github.com/echasnovski/mini.indentscope',
+  --   version = false, -- wait till new 0.7.0 release to put it back on semver
+  --   enabled = false,
+  --   event = 'VeryLazy',
+  --   opts = {
+  --     symbol = icon_indent,
+  --     options = { try_as_border = true },
+  --   },
+  --   init = function()
+  --     vim.api.nvim_create_autocmd('FileType', {
+  --       pattern = Core.defaults.exclude_filetypes,
+  --       callback = function()
+  --         vim.b.miniindentscope_disable = true
+  --       end,
+  --     })
+  --   end,
+  -- },
 
-  { -- https://github.com/echasnovski/mini.clue
-    'echasnovski/mini.clue',
+  { -- show next key clues
+    'https://github.com/echasnovski/mini.clue',
     version = false,
     lazy = false,
     enabled = true,
@@ -204,22 +175,37 @@ return {
         enabled = true,
         icon = true,
       },
-      modes = {
-        enabled = true,
-        format = function(_)
-          return ' ■' -- █ ▉ ▊ ▋▌▍
-        end,
-      },
       show_single_buffer = true,
       icons = { modified = '●', readonly = '' },
-      lsp = { enabled = true, separator = '' },
-      git = { branch = { icon = '' }, diff = { enabled = true } },
-      diagnostics = { style = 'standard' }, -- or 'mini'
-      pomodoro = { enabled = true },
+      git = {
+        branch = {
+          -- icon = '',
+          icon = '',
+        },
+        diff = { enabled = true },
+      },
+      lsp = {
+        clients = { enabled = true, separator = '' },
+        progress = { enabled = true },
+        diagnostics = { enabled = true, style = 'standard' },
+      },
+      exclusions = { filetypes = { 'gomarks', 'help' }, buftypes = { 'somefile', 'help' } },
+      extensions = {
+        modes = {
+          enabled = true,
+          format = function(mode)
+            if not mode then return '' end
+            -- return ' ■'
+            return ' ' .. mode:sub(1, 1):lower()
+          end,
+        },
+        pomodoro = { enabled = false },
+      },
       layout = {
-        left = { 'modes', 'coso', 'git_branch', 'git_diff' },
-        center = {},
+        left = { 'modes', 'git_branch', 'git_diff' },
+        center = { 'pomodoro' },
         right = {
+          'lsp_progress',
           'lsp_status',
           'lsp_diagnostics',
           'modified',
@@ -231,6 +217,8 @@ return {
       highlights = {
         WinBarModeNormal = { link = 'NonText' },
         WinBarModeVisual = { link = 'Special' },
+        WinBarGitBranch = { link = 'Constant' },
+        WinBarLspProgress = { link = 'RetroboxDimmer' },
       },
     },
   },

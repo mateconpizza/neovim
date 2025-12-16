@@ -3,7 +3,6 @@ _G.Core = require('me.core')
 Core.config = require('me.config')
 Core.config.options.setup()
 Core.config.lazy.setup()
-Core.log.debug_enable()
 
 vim.api.nvim_create_autocmd('User', {
   pattern = 'VeryLazy',
@@ -14,3 +13,5 @@ vim.api.nvim_create_autocmd('User', {
     Core.lsp.setup()
   end,
 })
+
+vim.cmd.colorscheme('retrobox.nvim')

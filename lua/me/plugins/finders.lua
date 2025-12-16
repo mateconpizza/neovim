@@ -3,15 +3,14 @@
 local default_fzf_profile = 'border-fused'
 
 return {
-  { -- https://github.com/ibhagwan/fzf-lua
-    'ibhagwan/fzf-lua',
+  { -- improved fzf.vim written in lua
+    'https://github.com/ibhagwan/fzf-lua',
     lazy = true,
     enabled = true,
     cmd = { 'FzfLua' },
     config = function()
       ---@module "fzf-lua"
       ---@type fzf-lua.Config|{}
-      ---@diagnostics disable: missing-fields
       local opts = {
         Core.env.get('TMUX_FZF_PROFILE', default_fzf_profile),
         defaults = {
@@ -24,6 +23,7 @@ return {
         oldfiles = {
           include_current_session = true,
         },
+        ---@diagnostic disable-next-line: missing-fields
         previewers = {
           builtin = {
             syntax_limit_b = 1024 * 100, -- 100KB
@@ -143,37 +143,39 @@ return {
     },
   },
 
-  { -- https://github.com/mateconpizza/projects.nvim
-    'mateconpizza/projects.nvim',
+  { -- simple fzf-lua project manager.
+    -- 'https://github.com/mateconpizza/projects.nvim',
+    dir = '~/dev/git/lualang/projects.nvim/',
+    dev = true,
     cmd = 'FzfLuaProjects',
     dependencies = {
       'ibhagwan/fzf-lua',
-      'nvim-tree/nvim-web-devicons',
+      'nvim-mini/mini.icons',
     },
     ---@module 'projects'
     ---@type projects.opts
     opts = {},
     keys = {
-      { '<leader>sp', '<CMD>FzfLuaProjects<CR>', desc = 'search projects' },
+      { '<leader>sp', vim.cmd.FzfLuaProjects, desc = 'search projects' },
     },
     enabled = true,
   },
 
-  { -- https://github.com/stevearc/oil.nvim
-    'stevearc/oil.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  { -- edit your filesystem like a buffer
+    'https://github.com/stevearc/oil.nvim',
+    dependencies = { 'nvim-mini/mini.icons' },
     ---@module 'oil'
     ---@type oil.SetupOpts
     opts = { delete_to_trash = true },
     cmd = { 'Oil' },
     keys = {
-      { '-', '<CMD>Oil<CR>', desc = 'open parent directory' },
+      { '-', vim.cmd.Oil, desc = 'open parent directory' },
     },
     enabled = true,
   },
 
-  { -- https://github.com/ggandor/leap.nvim
-    'ggandor/leap.nvim',
+  { -- general-purpose motion plugin
+    'https://codeberg.org/andyg/leap.nvim',
     keys = {
       { 's', '<Plug>(leap)', desc = 'leap forward to', mode = { 'n', 'x', 'o' } },
       { 'S', '<Plug>(leap-backward)', desc = 'leap backward to', mode = { 'n', 'x', 'o' } },
@@ -210,13 +212,13 @@ return {
           end,
           opts = {
             labels = '', -- force autojump
-            safe_labels = vim.fn.mode(1):match('[no]') and '' or nil, -- [1]
+            safe_labels = vim.fn.mode(1):match('[no]') and '' or nil,
           },
         }
         return vim.tbl_deep_extend('keep', common_args, key_specific_args)
       end
 
-      local clever = require('leap.user').with_traversal_keys -- [2]
+      local clever = require('leap.user').with_traversal_keys
       local clever_f = clever('f', 'F')
       local clever_t = clever('t', 'T')
 

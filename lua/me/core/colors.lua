@@ -60,7 +60,7 @@ local M = {}
 ---@field dark me.core.colors.Palette
 ---@field light me.core.colors.Palette
 
----@class me.core.colors.Palletes
+---@class me.core.colors.Palettes
 ---@field tokyonight Tokyonight
 ---@field gruvbox Colorscheme
 ---@field gruvbox_material Colorscheme
@@ -640,9 +640,9 @@ end
 ---@param bg string background color
 ---@param alpha number number between 0 and 1. 0 results in bg, 1 results in fg
 function M.blend(fg, bg, alpha)
-  ---@diagnostic disable-next-line: cast-local-type
+  ---@diagnostic disable-next-line: cast-local-type, param-type-mismatch
   bg = hex_to_rgb(bg)
-  ---@diagnostic disable-next-line: cast-local-type
+  ---@diagnostic disable-next-line: cast-local-type, param-type-mismatch
   fg = hex_to_rgb(fg)
 
   local blendChannel = function(i)
@@ -670,7 +670,7 @@ end
 
 ---@return me.core.colors.Palette
 function M.current()
-  return M.gruvbox_dark_medium()
+  return M.tokyonight_storm()
 end
 
 return M

@@ -60,7 +60,7 @@ local dapui_config = {
     enabled = true,
     -- Display controls in this element
     element = 'repl',
-    icons = icons.constrols,
+    icons = icons.controls,
   },
   floating = {
     max_height = 0.9,
@@ -77,16 +77,15 @@ local dapui_config = {
   },
 }
 
-return {
-  { -- https://github.com/mfussenegger/nvim-dap
-    'mfussenegger/nvim-dap',
-    lazy = true,
-    enabled = Core.env.debug,
-    dependencies = {
-      'rcarriga/nvim-dap-ui',
-      'nvim-neotest/nvim-nio',
-      'theHamsta/nvim-dap-virtual-text',
-    },
+return { -- debug adapter protocol client implementation
+  'https://github.com/mfussenegger/nvim-dap',
+  lazy = true,
+  enabled = Core.env.debug,
+  dependencies = {
+    'rcarriga/nvim-dap-ui',
+    'nvim-neotest/nvim-nio',
+    'theHamsta/nvim-dap-virtual-text',
+  },
     -- stylua: ignore
     keys = {
       { '<leader>d', '', desc = '+debugging'},
@@ -108,19 +107,18 @@ return {
       { '<leader>dt', function() require('dap').terminate() end, desc = 'terminate' },
       { '<leader>dw', function() require('dap.ui.widgets').hover() end, desc = 'widgets' },
     },
-    config = function()
-      local dap = require('dap')
-      local dapui = require('dapui')
-      require('nvim-dap-virtual-text').setup({})
-      set_icons()
-      dapui.setup(dapui_config)
+  config = function()
+    local dap = require('dap')
+    local dapui = require('dapui')
+    require('nvim-dap-virtual-text').setup({})
+    set_icons()
+    dapui.setup(dapui_config)
       -- stylua: ignore start
       dap.listeners.before.attach.dapui_config = function() dapui.open() end
       dap.listeners.before.launch.dapui_config = function() dapui.open() end
       dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
       dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
       Core.keymap('<leader>d?', function() dapui.eval(nil, { enter = true }) end, 'eval var under cursor')
-      -- stylua: ignore end
-    end,
-  },
+    -- stylua: ignore end
+  end,
 }

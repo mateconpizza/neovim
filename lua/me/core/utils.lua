@@ -41,16 +41,16 @@ function M.deduplicate(list)
 end
 
 -- check if path is file
----@return boolean
 ---@param path string
+---@return boolean
 M.is_file = function(path)
   local stat = uv.fs_stat(path)
   return stat ~= nil and stat.type == 'file'
 end
 
 -- check if path is dir
----@return boolean
 ---@param path string
+---@return boolean
 M.is_dir = function(path)
   local stat = uv.fs_stat(path)
   return stat ~= nil and stat.type == 'directory'

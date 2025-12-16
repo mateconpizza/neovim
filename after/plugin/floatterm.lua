@@ -5,7 +5,7 @@ local state = {
   },
 }
 
-Core.keymap('<C-\\>', '<CMD>FloatTerm<CR>', 'toggle term', { 'n', 't' })
+Core.keymap('<C-\\>', vim.cmd.FloatTerm, 'toggle term', { 'n', 't' })
 Core.keymap('<ESC><ESC>', '<C-\\><C-n>', 'term normal', 't')
 
 local function create_floating_window(opts)
@@ -39,9 +39,7 @@ end
 local toggle_term = function()
   if not vim.api.nvim_win_is_valid(state.floating.win) then
     state.floating = create_floating_window({ buf = state.floating.buf })
-    if vim.bo[state.floating.buf].buftype ~= 'terminal' then
-      vim.cmd.terminal()
-    end
+    if vim.bo[state.floating.buf].buftype ~= 'terminal' then vim.cmd.terminal() end
   else
     vim.api.nvim_win_hide(state.floating.win)
   end

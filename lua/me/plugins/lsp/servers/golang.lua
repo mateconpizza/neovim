@@ -27,16 +27,16 @@ local function load_env_file()
 end
 
 return {
-  { -- https://github.com/nvim-treesitter/nvim-treesitter
-    'nvim-treesitter/nvim-treesitter',
+  {
+    'https://github.com/nvim-treesitter/nvim-treesitter',
     branch = 'main',
     opts = function()
       Core.treesitter.add({ 'go', 'gomod', 'gowork', 'gosum', 'gotmpl' })
     end,
   },
 
-  { -- https://github.com/williamboman/mason.nvim
-    'williamboman/mason.nvim',
+  {
+    'https://github.com/williamboman/mason.nvim',
     opts = function(_, opts)
       if type(opts.ensure_installed) == 'table' then
         vim.list_extend(
@@ -47,8 +47,8 @@ return {
     end,
   },
 
-  { -- https://github.com/mfussenegger/nvim-dap
-    'mfussenegger/nvim-dap',
+  {
+    'https://github.com/mfussenegger/nvim-dap',
     optional = true,
     enabled = Core.env.debug,
     dependencies = {
@@ -102,11 +102,11 @@ return {
     end,
   },
 
-  { -- https://github.com/nvim-neotest/neotest
-    'nvim-neotest/neotest',
+  {
+    'https://github.com/nvim-neotest/neotest',
     dependencies = {
       {
-        'fredrikaverpil/neotest-golang', -- https://github.com/fredrikaverpil/neotest-golang
+        'https://github.com/fredrikaverpil/neotest-golang',
         version = '*',
         enabled = Core.env.testing,
         build = function()

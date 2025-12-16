@@ -1,43 +1,16 @@
-local neocodeium_enabled = false
-
 return {
-
-  { -- https://github.com/monkoose/neocodeium
-    'monkoose/neocodeium',
-    cmd = 'NeoCodeium',
-    enabled = true,
-    keys = {
-      {
-        '<leader>lS',
-        function()
-          neocodeium_enabled = not neocodeium_enabled
-          vim.cmd('NeoCodeium toggle')
-          Core.log.info('[coding] ', neocodeium_enabled and 'neocodeium enabled' or 'neocodeium disabled')
-        end,
-        desc = 'neocodeium toggle',
-      },
-    },
-    config = function()
-      local map = Core.keymap
-      local nc = require('neocodeium')
-      nc.setup({ enabled = false })
-
-      map('<C-g>', nc.accept, 'neocodeium accept', 'i')
-      map('<M-;>', nc.cycle_or_complete, 'neocodeium cycle', 'i')
-    end,
-  },
-
-  { -- https://github.com/folke/lazydev.nvim
-    'folke/lazydev.nvim',
+  { -- faster LuaLS setup for Neovim
+    'https://github.com/folke/lazydev.nvim',
     ft = 'lua', -- only load on lua files
     cmd = 'LazyDev',
     enabled = true,
     opts = {
       library = {
         -- Load luvit types when the `vim.uv` word is found
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
         { path = 'Core', words = { 'Core' } },
         { path = 'LazyVim', words = { 'LazyVim' } },
+        integrations = { coq = true },
       },
     },
   },

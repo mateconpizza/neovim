@@ -123,7 +123,7 @@ M.dap = {
     collapsed     = '▸',
     circular      = '',
   },
-  constrols       = {
+  controls       = {
     pause         = '',
     play          = '',
     step_into     = '',

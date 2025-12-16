@@ -1,20 +1,23 @@
 -- treesitter.lua
-local textobjects = { -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/tree/main
-  'nvim-treesitter/nvim-treesitter-textobjects',
+
+-- syntax aware text-objects, select, move, swap, and peek support.
+local textobjects = {
+  'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
   branch = 'main',
   enabled = true,
   config = Core.treesitter.text_objects_keymaps,
 }
 
-local tscontext = { -- https://github.com/nvim-treesitter/nvim-treesitter-context
-  'nvim-treesitter/nvim-treesitter-context',
-  opts = { enabled = true },
-  cmd = { 'TSContextEnable', 'TSContextDisable', 'TSContextToggle' },
-}
+-- show code context
+-- local tscontext = {
+--   'https://github.com/nvim-treesitter/nvim-treesitter-context',
+--   opts = { enabled = false },
+--   cmd = { 'TSContextEnable', 'TSContextDisable', 'TSContextToggle' },
+-- }
 
 return {
-  { -- https://github.com/nvim-treesitter/nvim-treesitter/tree/main
-    'nvim-treesitter/nvim-treesitter',
+  { -- nvim treesitter configurations and abstraction layer
+    'https://github.com/nvim-treesitter/nvim-treesitter',
     event = { 'BufReadPost', 'BufNewFile' },
     branch = 'main',
     version = false,
@@ -22,7 +25,7 @@ return {
     lazy = false,
     build = ':TSUpdate',
     cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall' },
-    dependencies = { textobjects, tscontext },
+    dependencies = { textobjects }, --, tscontext },
     config = Core.treesitter.setup,
   },
   -- { -- https://github.com/windwp/nvim-ts-autotag

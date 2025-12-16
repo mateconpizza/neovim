@@ -87,11 +87,10 @@ end
 
 --- Setup miscellaneous keymaps
 function M.setup_misc()
-  -- stylua: ignore start
   -- map('<leader>bdA', function() vim.cmd('bufdo bd') end, 'close all')
   -- map('<leader>bda', function() vim.cmd('%bd|e#|bd#') end, 'close all but this one')
   map('<leader>mb', Core.misc.banner, 'insert banner')
-  -- stylua: ignore end
+  map('=ap', "ma=ap'a", 'auto-indents the paragraph under the cursor')
 end
 
 --- Setup blackhole register shortcuts

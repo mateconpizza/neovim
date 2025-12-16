@@ -1,5 +1,5 @@
-return { -- https://github.com/ms-jpq/coq_nvim
-  'ms-jpq/coq_nvim',
+return { -- fast as F*CK nvim completion
+  'https://github.com/ms-jpq/coq_nvim',
   branch = 'coq',
   build = ':COQdeps',
   event = 'InsertEnter',
@@ -18,7 +18,7 @@ return { -- https://github.com/ms-jpq/coq_nvim
       auto_start = 'shut-up',
       display = {
         mark_applied_notify = false,
-        icons = { mappings = Core.icons.lsp.kinds, mode = 'long' },
+        icons = { mode = 'long' },
         ghost_text = { enabled = true },
         preview = {
           border = 'rounded',
@@ -64,9 +64,9 @@ return { -- https://github.com/ms-jpq/coq_nvim
       { expr = true, silent = true }
     )
   end,
-  dependencies = { -- https://github.com/ms-jpq/coq.thirdparty
-    -- { 'ms-jpq/coq.artifacts', branch = 'artifacts' },
-    { 'ms-jpq/coq.thirdparty', branch = '3p' },
+  dependencies = {
+    -- module lua sources for `coq.nvim`, first & third party
+    { 'https://github.com/ms-jpq/coq.thirdparty', branch = '3p' },
   },
   config = function()
     if vim.bo.filetype == 'gomarks' then require('me.config.gomarks').setup() end

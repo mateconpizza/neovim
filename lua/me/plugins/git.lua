@@ -2,8 +2,8 @@
 local Git = Core.git
 
 return {
-  { -- https://github.com/tpope/vim-fugitive
-    'tpope/vim-fugitive',
+  { -- a git wrapper so awesome, it should be illegal
+    'https://github.com/tpope/vim-fugitive',
     cmd = { 'Git', 'G', 'Gw' },
     keys = function()
       return {
@@ -43,8 +43,8 @@ return {
     enabled = true,
   },
 
-  { -- https://github.com/lewis6991/gitsigns.nvim
-    'lewis6991/gitsigns.nvim',
+  { -- git integration for buffers
+    'https://github.com/lewis6991/gitsigns.nvim',
     event = 'InsertEnter',
     opts = {
       -- stylua: ignore start
@@ -97,8 +97,8 @@ return {
     enabled = true,
   },
 
-  --[[ { -- https://github.com/sindrets/diffview.nvim
-    'sindrets/diffview.nvim',
+  --[[ { -- single tabpage interface for easily cycling through diffs for all modified files for any git rev
+    'https://github.com/sindrets/diffview.nvim',
     cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFocusFiles' },
     config = true,
     keys = {

@@ -1,23 +1,8 @@
 -- lsp.config
 return {
-  { -- https://github.com/j-hui/fidget.nvim
-    'j-hui/fidget.nvim',
-    event = 'LspAttach',
-    opts = {
-      notification = {
-        window = { winblend = 0 },
-      },
-      progress = {
-        display = {
-          done_icon = '✓',
-        },
-      },
-    },
-    enabled = true,
-  },
-
-  { -- https://github.com/williamboman/mason.nvim
-    'williamboman/mason.nvim',
+  { -- portable package manager for neovim that runs everywhere neovim runs.
+    -- easily install and manage lsp servers, dap servers, linters, and formatters.
+    'https://github.com/williamboman/mason.nvim',
     cmd = 'Mason',
     build = ':MasonUpdate',
     enabled = true,

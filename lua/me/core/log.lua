@@ -11,6 +11,7 @@ function M.debug_disable()
 end
 function M.debug_toggle()
   M._debug = not M._debug
+  if M._debug then Core.log.debug('[Logger] ', 'enabled') end
 end
 
 local function split_args(prefix, msg)
