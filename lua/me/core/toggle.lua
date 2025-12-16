@@ -3,10 +3,7 @@ local M = {}
 local minimalist = false
 local maximize = {
   toggle = false,
-  state = {
-    height = 0,
-    width = 0,
-  },
+  restore_cmd = nil,
 }
 
 function M.statusline()
@@ -73,18 +70,33 @@ function M.fmt_on_save()
   vim.print('toggle autofmt: ' .. tostring(vim.g.enable_autoformat))
 end
 
+-- function M.maximize()
+--   local win = vim.api.nvim_get_current_win()
+--   maximize.toggle = not maximize.toggle
+--
+--   if maximize.toggle then
+--     maximize.state.height = vim.api.nvim_win_get_height(win)
+--     maximize.state.width = vim.api.nvim_win_get_width(win)
+--     vim.cmd('wincmd |') -- maximize window width
+--     vim.cmd('wincmd _') -- maximize window height
+--   else
+--     vim.api.nvim_win_set_height(win, maximize.state.height)
+--     vim.api.nvim_win_set_width(win, maximize.state.width)
+--   end
+-- end
+
 function M.maximize()
-  local win = vim.api.nvim_get_current_win()
   maximize.toggle = not maximize.toggle
 
   if maximize.toggle then
-    maximize.state.height = vim.api.nvim_win_get_height(win)
-    maximize.state.width = vim.api.nvim_win_get_width(win)
-    vim.cmd('wincmd |') -- maximize window width
-    vim.cmd('wincmd _') -- maximize window height
+    -- save full window layout
+    maximize.restore_cmd = vim.fn.winrestcmd()
+
+    -- maximize current window
+    vim.cmd('wincmd |')
+    vim.cmd('wincmd _')
   else
-    vim.api.nvim_win_set_height(win, maximize.state.height)
-    vim.api.nvim_win_set_width(win, maximize.state.width)
+    if maximize.restore_cmd then vim.cmd(maximize.restore_cmd) end
   end
 end
 
